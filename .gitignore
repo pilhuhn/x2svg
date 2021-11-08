@@ -1,5 +1,14 @@
 # Default ignored files
 /x2svg.iws
+/x2svg.iml
+/x2svg.ipr
 
 # Project exclude paths
 /classes/
+/bin/
+/build/
+/test-output/
+*.zip
+*.jar
+**/*.class
+
