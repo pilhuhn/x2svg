@@ -1,0 +1,6 @@
+<!ENTITY % test 'hello'>
+
+<!-- The root element of this DTD-->
+<!ELEMENT root (%test;)>
+<!ELEMENT hello (world)>
+<!ELEMENT world (#PCDATA)>

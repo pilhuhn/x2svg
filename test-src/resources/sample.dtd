@@ -1,0 +1,15 @@
+<!-- The root element of this DTD-->
+<!ELEMENT root (a? ,b+ ,c*)>
+<!--A simple character node-->
+<!ELEMENT a (#PCDATA)>
+<!--A selection of d or e-->
+<!ELEMENT b (a,(d|e|f?|g)*)>
+<!ELEMENT c (f+,hello*)>
+<!ELEMENT d (#PCDATA)>
+<!ELEMENT e (f+|d?|g*)>
+<!ELEMENT f (#PCDATA)>
+<!ELEMENT hello (#PCDATA)>
+<!ELEMENT g EMPTY>
+<!ATTLIST a att1 (true|false) 'false'>
+<!ATTLIST b attB CDATA #IMPLIED>
+<!ATTLIST b id ID >

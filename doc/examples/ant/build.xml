@@ -1,0 +1,67 @@
+<project name="x2svg-anttask-example" basedir="." default="all">	
+
+	<!-- Important note for eclipse (and other IDEs ?) users ! -->
+	<!-- If you try to run this script from eclipse, you will probably see 
+         lots of unable to load class errors.  -->
+	
+	<property name="fop" value="fop-0.93"/>
+	<property name="dtdparser" value="dtdparser-1.21"/>
+
+	<property name="project.dir" value="${basedir}/../../../"/>
+
+	<!-- Create the classpath for the example ant tasks, requires dtdparser and fop installed. -->
+	<path id="x2svgtask.classpath" description="Required classpath to use x2svg as an ant task.">
+		<fileset dir="${project.dir}/lib/${fop}/build">
+		    <include name="*.jar"/>
+		</fileset>
+		<fileset dir="${project.dir}/lib/${fop}/lib">
+		    <include name="*.jar"/>
+		</fileset>
+		<fileset dir="${project.dir}/lib/${dtdparser}/">
+		    <include name="*.jar"/>
+		</fileset>
+		<fileset dir="${project.dir}">
+		    <include name="x2svg.jar"/>
+		</fileset>
+	</path>
+	
+	<target name="all" depends="x2svg" />
+	
+	<target name="x2svg">
+		
+		<!-- REQUIRED: define the custom types and tasks needed by X2Svg. -->
+		<typedef resource="X2SvgTypes.properties" classpathref="x2svgtask.classpath" loaderref="x2svg" />
+		<taskdef resource="X2SvgTasks.properties" loaderref="x2svg" />
+		
+		<!-- For debugging only, shows classpath the x2svg task will use. -->
+		<property name="x2svgcp" refid="x2svgtask.classpath"/>
+    	<echo message="Classpath is ${x2svgcp}"/>
+    		
+		<!-- An X2Svg task that will parse dtd and properties files to svg, and also output pdf and png. -->
+		<x2svg debugEnabled="true" propertiesLocation="x2svg.properties">
+			<!-- Set additional output formats for parser. -->
+			<output>
+				<format type="pdf" />
+				<format type="png" />
+			</output>
+			<!-- Parse DTD and properties files in the project. -->
+			<parser mode="auto">
+				<comment message="These comments are added to all processed files." />
+		  		<fileset dir="${project.dir}" includes="**/*.dtd,**/*.properties" />
+		  	</parser>
+		</x2svg>
+		
+		<!-- An X2Svg task that will convert svg files to jpg.-->
+		<x2svg debugEnabled="true">
+			<!-- Set convertor output formats -->
+			<output>
+				<format type="eps" />
+			</output>
+			<!-- Convert SVG files into different output formats. -->
+			<convertor>
+		  		<fileset dir="${project.dir}" includes="**/*.svg" />
+		  	</convertor>
+		</x2svg>
+	</target>
+	
+</project>

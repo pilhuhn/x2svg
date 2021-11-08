@@ -1,0 +1,9 @@
+<!-- The root element of this DTD-->
+<!ELEMENT root (a? ,b+ ,c*)>
+<!--A simple character node-->
+<!ELEMENT a (#PCDATA)>
+<!--A selection of d or e-->
+<!ELEMENT b (#PCDATA)>
+<!ELEMENT c (d+)>
+<!ELEMENT d (e)>
+<!ELEMENT e (#PCDATA)>

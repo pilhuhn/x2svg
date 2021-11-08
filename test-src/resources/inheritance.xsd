@@ -1,0 +1,113 @@
+<?xml version="1.0" standalone="yes"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:x2svg="http://bsd.de/x2svg"
+           targetNamespace="http://bsd.de/x2svg"
+           elementFormDefault="qualified"
+	>
+
+	<xs:element name="root">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x2svg:parent-type"
+					minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:element name="parent-type" abstract="true" type="x2svg:parentType"/>
+
+	<xs:complexType name="parentType">
+      <xs:sequence>
+         <xs:element name="description" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:whiteSpace value="collapse"/>
+                  <xs:minLength value="1"/>
+                  <xs:maxLength value="4000"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+
+   <xs:element name="moe" type="x2svg:moeType" substitutionGroup="x2svg:parent-type"/>
+
+   <xs:complexType name="moeType">
+      <xs:complexContent>
+         <xs:extension base="x2svg:parentType">
+            <xs:sequence>
+               <xs:element name="property-options" type="x2svg:myOptions" minOccurs="0" maxOccurs="1"/>
+               <xs:element name="constraint" type="x2svg:constraintType" minOccurs="0" maxOccurs="unbounded"/>
+               <xs:element name="defaultValueDescription" minOccurs="0" maxOccurs="1" type="xs:string"/>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+
+   <xs:element name="schmoe" type="x2svg:schmoeType" substitutionGroup="x2svg:parent-type"/>
+
+   <xs:complexType name="schmoeType">
+      <xs:complexContent>
+         <xs:extension base="x2svg:parentType">
+            <xs:sequence>
+               <xs:element ref="x2svg:parent-type" minOccurs="0" maxOccurs="unbounded">
+               </xs:element>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+
+
+   <xs:element name="joe" type="x2svg:joeType" substitutionGroup="x2svg:parent-type"/>
+
+   <xs:complexType name="joeType">
+      <xs:complexContent>
+         <xs:extension base="x2svg:parentType">
+            <xs:sequence>
+               <xs:element ref="x2svg:parent-type" minOccurs="0" maxOccurs="1">
+               </xs:element>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+
+   <xs:complexType name="myOptions">
+      <xs:sequence>
+         <xs:element name="option" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+   </xs:complexType>
+
+   <xs:complexType name="constraintType">
+      <xs:choice maxOccurs="unbounded" minOccurs="1">
+         <xs:element name="integer-constraint" type="x2svg:integerConstraintType"/>
+         <xs:element name="float-constraint" type="x2svg:floatConstraintType"/>
+         <xs:element name="regex-constraint" type="x2svg:regexConstraintType"/>
+      </xs:choice>
+   </xs:complexType>
+
+   <xs:complexType name="integerConstraintType">
+      <xs:attribute name="minimum" type="xs:integer">
+         <xs:annotation><xs:documentation>Minimum integer value.</xs:documentation></xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="maximum" type="xs:integer">
+         <xs:annotation><xs:documentation>Maximum integer value.</xs:documentation></xs:annotation>
+      </xs:attribute>
+   </xs:complexType>
+
+   <xs:complexType name="floatConstraintType">
+      <xs:attribute name="minimum" type="xs:float">
+         <xs:annotation><xs:documentation>Minimum decimal value.</xs:documentation></xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="maximum" type="xs:float">
+         <xs:annotation><xs:documentation>Maximum decimal value.</xs:documentation></xs:annotation>
+      </xs:attribute>
+   </xs:complexType>
+
+   <xs:complexType name="regexConstraintType">
+      <xs:attribute name="expression" type="xs:string" use="required">
+      </xs:attribute>
+   </xs:complexType>
+   
+</xs:schema>

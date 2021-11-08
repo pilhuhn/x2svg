@@ -1,0 +1,68 @@
+<xsd:schema
+  xmlns:xsd='http://www.w3.org/2001/XMLSchema'
+  targetNamespace='http://bsd.de/x2svg/'
+  xmlns:x2='http://bsd.de/x2svg/'>
+
+ <xsd:element name='root'>
+  <xsd:complexType>
+   <xsd:sequence>
+    <xsd:element ref='x2:a' minOccurs='0' maxOccurs='1'/>
+    <xsd:element ref='x2:b' minOccurs='1' maxOccurs='unbounded'/>
+    <xsd:element ref='x2:c' minOccurs='0' maxOccurs='unbounded'/>
+   </xsd:sequence>
+  </xsd:complexType>
+ </xsd:element>
+
+ <xsd:element name='a'>
+  <xsd:complexType mixed='true'>
+  	<xsd:attribute name="at1" type="xsd:string" use="required"/> 
+  	<xsd:attribute name="at2" type="xsd:string" use="optional"/> 
+  </xsd:complexType>
+ </xsd:element>
+
+ <xsd:element name='b'>
+  <xsd:complexType>
+   <xsd:sequence>
+    <xsd:element ref='x2:a' minOccurs="1" maxOccurs="1"/>
+    <xsd:choice minOccurs='0' maxOccurs='unbounded'>
+     <xsd:element ref='x2:d' minOccurs="1" maxOccurs="1"/>
+     <xsd:element ref='x2:e' minOccurs="1" maxOccurs="1"/>
+     <xsd:element ref='x2:f' maxOccurs="1" minOccurs="0"/>
+    </xsd:choice>
+   </xsd:sequence>
+  </xsd:complexType>
+ </xsd:element>
+
+ <xsd:element name='c'>
+  <xsd:complexType>
+   <xsd:sequence>
+    <xsd:element ref='x2:f' maxOccurs='unbounded'/>
+    <xsd:element ref='x2:hello' minOccurs='0' maxOccurs='unbounded'/>
+   </xsd:sequence>
+  </xsd:complexType>
+ </xsd:element>
+
+ <xsd:element name='d'>
+  <xsd:complexType mixed='true'>
+  </xsd:complexType>
+ </xsd:element>
+
+ <xsd:element name='e'>
+  <xsd:complexType>
+   <xsd:choice>
+    <xsd:element ref='x2:f' minOccurs="1" maxOccurs="unbounded"/>
+    <xsd:element ref='x2:d' minOccurs="0" maxOccurs="1"/>
+   </xsd:choice>
+  </xsd:complexType>
+ </xsd:element>
+
+ <xsd:element name='f'>
+  <xsd:complexType mixed='true'>
+  </xsd:complexType>
+ </xsd:element>
+
+ <xsd:element name='hello'>
+  <xsd:complexType mixed='true'>
+  </xsd:complexType>
+ </xsd:element>
+</xsd:schema>

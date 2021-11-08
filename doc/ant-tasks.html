@@ -1,0 +1,316 @@
+<html>
+<head>
+	<style>
+		pre
+		{
+		    width: 98%;
+		    border: 1px solid #CCCCCC;
+		    background-color: #f5f5f5;
+		    padding: 10px;
+		}
+		h2
+		{
+			color: white;
+		    background-color: #525D76;
+		    padding: 2px;
+		}
+		h3 
+		{
+			color: white;
+  			background-color: #525D76;
+		    padding: 2px;
+		}
+		h4 
+		{
+			color: white;
+			background-color: #828DA6;
+		    padding: 2px;
+		}		
+
+		.darkGrey
+		{	
+			background-color: #DDD;
+		}
+		.lightGrey
+		{	
+			background-color: #F1F1F1;
+		}
+		
+		
+	</style>
+	
+</head>
+<body>
+
+<h1>x2svg</h1>
+
+<h2>Description</h2>
+
+<p>
+x2svg is a collection of ant tasks that can be used to convert various heirarchical tree structural
+forms into a visual representation. e.g. convert a DTD into an SVG. Various input and output formats
+are supported by these tasks.
+</p>
+
+<p>
+The current implementation supports a main 'x2svg' task (that supplies global configuration settings)
+with a parser sub-task, that is responsible for actually parsing and converting files ot the
+requested output format(s).
+</p>
+
+<p>
+The parser sub-task can either auto-detect (based on file extension) the type of file being parsed, or
+force the type by setting a task parameter.
+</p>
+
+<h4>Current supported input formats</h4>
+<ul>
+	<li><b>DTD</b> Files</li>
+	<li>Ant <b>build.xml</b> files</li>
+	<li><b>.properties</b> files</li>
+	<li><b>XSD</b> (Xml Schema) files - currently alpha level</li>
+</ul>
+
+<h4>Current supported output formats</h4>
+<ul>
+	<li><b>SVG</b> (Scalable Vector Graphics) format</li>
+	<li><b>PDF</b> (Portable Document Format) format</li>
+	<li><b>PNG</b> (Portable Network Graphic) format</li>
+	<li><b>JPG</b> (JPG Graphic) format</li>
+	<li><b>EPS</b> (Encapsulated Post Script) format</li>
+</ul>
+
+<h2>Parameters</h2>
+
+<p>
+The parameters on the x2svg task are global properties that are applied to all sub-tasks that are 
+exectued under this main task.
+</p>
+
+<table width="100%" cellpadding="3" cellspacing="0">
+	<tr class="darkGrey">
+		<th width="15%">Attribute</th>
+		<th>Description</th>
+		<th width="15%">Required</th>
+	</tr>
+	<tr class="lightGrey">
+		<td valign="top">debugEnabled</td>
+		<td>If set to true, x2svg will output verbose debugging information. This is a global setting that 
+		    applies to all sub-tasks.</td>
+		<td valign="top">No, default is false</td>
+	</tr>
+	<tr class="lightGrey">
+		<td valign="top">propertiesLocation</td>
+		<td>
+			If specified, x2svg will try to load the properties configuration from the given location.
+			If not specified, the task will attempt to load x2svg.properties from the system classpath.
+			If this fails, then default values are used.			
+		</td>
+		<td valign="top">No</td>
+	</tr>
+</table>
+
+<h2>Nested elements</h2>
+
+<h3>output</h3>
+
+<p>
+Zero or one <code>output</code> elements are allowed within an <code>x2svg</code> task.
+</p>
+
+<p>
+The nested <code>output</code> element specifies the output formats that  
+should be produced. <b>This element is optional - if no output formats 
+are specified, then only SVG will be outputted.</b> If, however, this element 
+is specified, then one or more format elements must be specified. Also, SVG will 
+NOT be automatically outputted if an output element is present, it must be 
+explicitly specified.
+</p>
+
+<h3>Parameters specified as nested elements</h3>
+
+<h4>format</h4>
+
+<p>
+One or more <code>format</code> elements are allowed within an <code>output</code> element.
+</p>
+
+<p>
+The output sub-task allos for one or more output formats to be specified.
+~For each specified format tag inside an output tag, an appropriate renderer
+will be used to produce output in the requested format. If the format specified
+is invalid, it is ignored.
+</p>
+
+<table width="100%" cellpadding="3" cellspacing="0">
+	<tr class="darkGrey">
+		<th width="15%">Attribute</th>
+		<th>Description</th>
+		<th width="15%">Required</th>
+	</tr>
+	<tr class="lightGrey">
+		<td valign="top">type</td>
+		<td>
+			<p>
+			Specify the format that the parsed output tree will be rendered as. If an unknown
+			format is specified, it will be ignored. The following format output options are 
+			supported:
+			</p>
+			<ul>
+				<li>svg - Output the parsed tree in SVG format <i>NB: not specifying the output tag at all implicitly selectes this option.</i></li>
+				<li>pdf - Output the parsed tree as a PDF. The PDF is currently sized to to the tree (not standard paper sizes).</li>
+				<li>png - Output the parsed tree as a PNG bitmap.</li>
+				<li>jpg - Output the parsed tree as a JPEG bitmap.</li>
+				<li>eps - Output the parsed tree as a EPS postscript file.</li>
+			</ul>
+		</td>
+		<td valign="top">Yes</td>
+	</tr>
+</table>
+
+
+
+
+<h3>parser</h3>
+
+<p>
+One or more <code>parser</code> elements are allowed within an <code>x2svg</code> element.
+</p>
+
+<p>
+The nested <code>parser</code> element specifies a set of files or folders
+(as one or more filesets) that should be processed to convert their native
+form into a graphical representation.
+</p>
+
+<h3>Parameters</h3>
+
+<table width="100%" cellpadding="3" cellspacing="0">
+	<tr class="darkGrey">
+		<th width="15%">Attribute</th>
+		<th>Description</th>
+		<th width="15%">Required</th>
+	</tr>
+	<tr class="lightGrey">
+		<td valign="top">mode</td>
+		<td>Specify the type of file that is being parsed by this sub-task. Specifying auto will
+		force the parser to evaluate each file in turn, and attempt to best-guess the format
+		for parsing. Any files encountered whose format cannot be determined will be logged, and skipped.
+		</td>
+		<td valign="top">Yes</td>
+	</tr>
+</table>
+
+<h3>Parameters specified as nested elements</h3>
+
+<h4>comment</h4>
+
+<p>
+Zero or one <code>comment</code> elements are allowed within an <code>parser</code> element.
+</p>
+
+<p>
+The <code>parser</code> sub-task supports zero or one nested &lt;comment&gt; elements that specify the 
+comment to be annotated to each parsed output.
+</p>
+
+<h3>Parameters</h3>
+
+<table width="100%" cellpadding="3" cellspacing="0">
+	<tr class="darkGrey">
+		<th width="15%">Attribute</th>
+		<th>Description</th>
+		<th width="15%">Required</th>
+	</tr>
+	<tr class="lightGrey">
+		<td valign="top">message</td>
+		<td>Specify the message or comment that should be added to each generated SVG.
+		</td>
+		<td valign="top">No</td>
+	</tr>
+</table>
+
+<h4>fileset</h4>
+
+<p>
+One or more <code>fileset</code> elements are allowed within an <code>parser</code> element.
+</p>
+
+<p>
+The <code>parser</code> sub-task supports one ot more nested &lt;fileset> elements that specify the files that are to 
+be included in this parse/conversion process.
+</p>
+
+<h2><code>parser</code> sub-task example</h2>
+<p>See the doc/examples/ directory of the distribution for a sample build file.</p>
+<pre>
+&lt;x2svg debug="true" propertiesLocation="x2svg.properties">
+    &lt;output>
+        &lt;!-- Output each (valid) parsed input as a PDF, and PNG. -->
+        &lt;format type="pdf" />
+        &lt;format type="png" />
+    &lt;/output>
+
+    &lt;parser mode="auto">
+        &lt;!-- A parser sub-task that will attempt to auto-detect which parser to use  -->
+        &lt;!-- based on the extension of the encountered file.  -->
+        &lt;fileset dir="${build}/classes" excludes="**/Test.class" />
+    &lt;/parser>
+
+    &lt;parser mode="dtd">
+        &lt;!-- A parser sub-task that will only attempt to parse DTDs -->
+        &lt;!-- the includes is not neccessary, but helps clarity. -->
+        &lt;comment message="These examples demonstrtes parsing DTD files." />
+        &lt;fileset dir="${build}/resources/dtd" includes="**/*.dtd" />
+    &lt;/parser>
+&lt;/x2svg>
+</pre>
+
+
+<h3>convertor</h3>
+
+<p>
+One or more <code>convertor</code> elements are allowed within an <code>x2svg</code> element.
+</p>
+
+<p>
+The nested <code>convertor</code> element specifies a set of files or folders
+(as one or more filesets) that should be converted from SVG into different
+specified graphical representations.
+</p>
+
+
+<h3>Parameters specified as nested elements</h3>
+
+<h4>fileset</h4>
+
+<p>
+One or more <code>fileset</code> elements are allowed within an <code>convertor</code> element.
+</p>
+
+<p>
+The <code>convertor</code> sub-task supports one ot more nested &lt;fileset> elements that specify the SVG files 
+that are to be included in this conversion process.
+</p>
+
+
+<h2><code>convertor</code> sub-task example</h2>
+<p>See the doc/examples/ directory of the distribution for a sample build file.</p>
+<pre>
+&lt;x2svg debug="true">
+    &lt;output>
+        &lt;!-- Output JPG converted files. -->
+        &lt;format type="jpg" />
+    &lt;/output>
+
+    &lt;convertor>
+        &lt;!-- A convertor sub-task that will attempt to convert SVG files  -->
+        &lt;!-- to the output formats specified above.  -->
+        &lt;fileset dir="${build}/images" includes="**/*.svg" />
+    &lt;/convertor>
+
+&lt;/x2svg>
+</pre>
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+ <suite thread-count="5" verbose="1" name="x2svg" annotations="JDK">
+   <test verbose="2" name="SimpleTests" >
+     <packages>
+       <package name="de.bsd.x2svg.test" />
+     </packages>
+   </test>
+ </suite>

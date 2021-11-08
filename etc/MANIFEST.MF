@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: de.bsd.x2svg.X2Svg
+
+

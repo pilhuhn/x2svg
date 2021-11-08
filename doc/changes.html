@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="standard.css" type="text/css" media="screen"/>
+    <title>x2svg - Changes</title>
+</head>
+<body>
+<div class="werbung">
+    <a href="http://sourceforge.net"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=199130&amp;type=1"
+                                          width="88" height="31" border="0" alt="SourceForge.net Logo"/></a>
+</div>
+<div class="indent">
+[ <a href="http://x2svg.sourceforge.net/index.html">Start</a> ]
+[ <a href="readme.html">Install etc.</a> ]
+[ Changelog ]
+[ <a href="http://sf.net/projects/x2svg/">SourceForge</a> ]
+[ <a href="symbols.html">Graph symbols</a> ]
+[ <a href="properties.html">Properties</a> ]
+[ <a href="http://x2svg.sf.net/javadoc/">JavaDoc</a> ]
+[ <a href="http://freshmeat.net/projects/x2svg/">FreshMeat</a> ]
+[ <a href="http://www.ohloh.net/projects/x2svg">Ohloh</a> ]
+[ <a href="http://x2svg.svn.sourceforge.net/viewvc/x2svg/">Browse source</a> ]
+<h1>x2svg</h1>
+
+<h2>Changes</h2>
+<dl>
+    <dt>1.2.2, 2008/xx/yy</dt>
+    <dd>
+        <ul>
+            <li>Add a preference to draw shadows in only one color or anti-aliased as before.</li>
+        </ul>
+    </dd>
+<dt>1.2.1, 2008/07/13</dt>
+<dd>
+	<ul>
+		<li>Draw shadows on the connection lines.</li>
+		<li>Fixed a bug that produced 'steps' even in straight lines.</li>
+	</ul>
+</dd>
+<dt>1.2, 2008/05/13</dt>
+<dd>
+	<ul>
+		<li>Pass debug flag to the parsers.</li>
+		<li>Add the possibility in the GUI to pass parser specific options to 
+		the parser (SF fr#1956587).</li>
+		<li>Allow parsing of attributes and element comments. It depends on the 
+		individual parser if this is supported (SF FR#1940442). As this is still
+        somewhat experimental, it is turned off by default.</li>
+		<li>Pull ant.lib into lib/, so the IDE can use this one.</li>
+		<li>Allow parsing of types in the XSD parser (SF FR#1947079)</li>
+	</ul>
+</dd>
+
+<dt>1.2beta3, 2008/04/27</dt>
+<dd>
+    <ul>
+        <li>Updated the libraries on the scripts to match the libraries introduced in 1.2-beta2 (SF bug#1944294).</li>
+        <li>Added the possibility to the XSD parser to just show references to substitutonGroups, but not the whole
+            substituted group (SF fr#1769065).
+        </li>
+        <li>Added the possibility to limit the depth of the parsed tree of the XSD Parser</li>
+        <li>It is now possible to get the parser specific help on the command line and to list modes and suffixes (SG
+            bug#1950350)
+        </li>
+        <li>Fix errors with options without argument and NPE without input file (SF bug#1951088).</li>
+    </ul>
+</dd>
+<dt>1.2-beta2, 2008/04/13</dt>
+<dd>
+    <ul>
+        <li>Fixes around the printing of the comment.</li>
+        <li>Some code cleanup</li>
+        <li>Added an ant target to automatically pull in the dependencies.</li>
+        <li>Upgraded testng to 5.7 and fop to 0.95beta / batik 1.7</li>
+        <li>Allow the gui to directly show the generated SVG. This needs your help - see
+            <a href="http://pilhuhn.blogspot.com/2008/04/x2svg-plea-for-awt-help.html">http://pilhuhn.blogspot.com/2008/04/x2svg-plea-for-awt-help.html</a>.
+        </li>
+    </ul>
+<dt>1.2-beta1, 2007/08/13</dt>
+<dd>
+    <ul>
+        <li>Documentation updates</li>
+        <li>Changed handling of the property file. See <a href="properties.html">properties.html</a>.</li>
+        <li>Fixed a bug where the directory path of the input was appended to the output if only a directory was given
+            for output conversion (x2svg-Bugs-1770327)
+        </li>
+        <li>The gui no longer silently swallows errors (x2svg-Bugs-1771512)</li>
+        <li>Comments can be added to a diagram e.g. stating the input file or user (x2svg-FR-1770604)</li>
+        <li>Improved XSD handling. Recursions are handled and a big Schema from @work can now be parsed. Inheritance is
+            honored.
+        </li>
+        <li>Fix for: "The DTDParser was going into an endless loop" (x2svg-Bugs-1766097).</li>
+        <li>Added a test suite.</li>
+    </ul>
+</dd>
+<dt>1.1gui, 2007/07/29</dt>
+<dd>
+    <ul>
+        <li>Added a simle GUI to use x2svg without command line</li>
+        <li>Added batch scripts for Windows</li>
+    </ul>
+</dd>
+<dt>Release 1.1, 2007/07/20</dt>
+<dd>
+    <ul>
+        <li>Much work on the ant task (by Gareth Floodgate).</li>
+        <li>Refactoring of outputConverters. Enables support for TIFF, JPEG and EPS as well.
+            <ul>
+                <li>SvgConverter, as replacement for SVG2PNG and SVG2PDF, can be used stand alone.</li>
+                <li>Output file type for converters can be given without a file name or as directory only.</li>
+                <li>More than one output conversion at a time can be specified with the -c switch.</li>
+            </ul>
+        <li>Improved plugin loading to better suit the needs of the ant task (by Gareth Floodgate)</li>
+    </ul>
+</dd>
+<dt>1.1beta1, 2007/07/03</dt>
+<dd>
+    <ul>
+        <li>Initial (read: alpha) version of a XML Schema parser</li>
+        <li>Added the option to create png images as well</li>
+        <li>X2svg can now be run as ant task (by Gareth Floodgate)</li>
+        <li>build.xml Parser can now also show all targets (parser option '-f')</li>
+        <li>build.xml Parser now follows &lt;antcall&gt;</li>
+        <li>DTDParser can guess the root element if not provided (by Gareth Floodgate)</li>
+        <li>Support for empty and anonymous elements in the DTDParser (by Gareth Floodgate)</li>
+    </ul>
+</dd>
+<dt>Release 1.0, 2007/05/28</dt>
+<dd>
+    <ul>
+        <li>I18N and messages in DE locale. Those are encoded in iso-8859-1.</li>
+        <li>Fix error in font handling, that made its way into the code at the last code shuffling.</li>
+        <li>Text color can now be specified in the properties as a 24bit RGB value. This can be encoded as
+            hex like 0xrrggbb, as it is well know from 'the web'.
+        </li>
+        <li>Build.xml parser: Put the name of the default target at the root of the tree.</li>
+        <li>Javadoc is now no longer built on a normal <em>ant</em> run. Use the <em>javadoc</em> target to
+            build the javadoc documentation.
+    </ul>
+</dd>
+<dt>1.0beta3, 2007/05/24</dt>
+<dd>
+    <ul>
+        <li>Add a -d <em>depth</em> option to the DtdParser to limit the tree depth. Default is unlimited.</li>
+        <li>Introduce a ParserProblemException to report errors in parsing the input.</li>
+        <li>Fix handling of -d option, which swallowed a non-exiting arg.</li>
+        <li>Internal code shuffling in order to prepare for a possible Swing-Frontend.</li>
+        <li>Fixed the test for presence of x2svg.jar in run.sh.</li>
+    </ul>
+</dd>
+<dt>1.0beta2, 2007/05/14</dt>
+<dd>
+    <ul>
+        <li>Fixed a bug in the handling of ? and * in dtd elements -- those were reversed.</li>
+        <li>Rework of parser architecture. Parsers are now "real" plugins.</li>
+        <li>The ant task 'run-sample' now writes the results into the 'out' folder in the project tree.
+            Samples for provided parsers are run.
+        </li>
+        <li>Implementation of a simple parser for ant build files.</li>
+        <li>Fixed an off by one drawing problem of the link between ContentModel and ElementBox,
+            which resulted in a line with a little hole.
+        </li>
+    </ul>
+</dd>
+<dt>1.0beta1, 2007/05/10</dt>
+<dd>First public beta release including a DTD and Properties parser.</dd>
+</dl>
+</div>
+</body>
+</html>

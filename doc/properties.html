@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="content-language" content="en">
+<meta http-equiv="language" content="en">
+<link rel="stylesheet" href="standard.css" type="text/css"
+	media="screen">
+<meta http-equiv="keywords" content="Java, svg, dtd, layout, pdf">
+<meta NAME="robots" CONTENT="index,follow">
+<title>x2svg - property file</title>
+</head>
+<body>
+<div class="werbung" id="werbung"><a href="http://bsd.de/e3fu/">My
+EJB3 book</a>
+<p /><a href="http://labs.jboss.com/portal/jbossejb3">EJB 3 at JBoss</a>
+<p /><a href="http://sourceforge.net"><img
+	src="http://sflogo.sourceforge.net/sflogo.php?group_id=199130&amp;type=1"
+	width="88" height="31" alt="SourceForge.net Logo" /></a>
+</div>
+<div class="indent">
+[ <a href="index.html">Start</a> ] 
+[ <a href="readme.html">Install etc.</a> ] 
+[ <a href="changes.html">Changelog</a> ] 
+[ <a href="todo.html">Todos</a> ] 
+[ <a href="http://sf.net/projects/x2svg/">SourceForge</a>] 
+[ <a href="symbold.html">Symbols</a> ] 
+[ Properties ]
+[ <a href="http://x2svg.sf.net/javadoc/">JavaDoc</a> ]
+[ <a href="http://freshmeat.net/projects/x2svg/">FreshMeat</a> ]
+[ <a href="http://www.ohloh.net/projects/x2svg">Ohloh</a> ]
+[ <a href="http://x2svg.svn.sourceforge.net/viewvc/x2svg/">Browse source</a> ]
+<h1>x2svg</h1>
+<h2>Property file x2svg.properties</h2>
+This page explains the settings of the properties file <code>x2svg.properties</code>.
+Below you will find an example of this file.
+<p />Loading rules are (from 1.2beta1 on):
+<ol>
+	<li>Try a location passed on command line via -P switch</li>
+	<li>Try to load <code>x2svg.properties</code> from the current
+	directory</li>
+	<li>Try to load <code>x2svg.properties</code> from classpath</li>
+</ol>
+
+<h3>List of properties</h3>
+<dl>
+	<dt>x2svg.font.element</dt>
+	<dd>Font to use for element names. Default is SansSerif-PLAIN-12</dd>
+	<dt>x2svg.font.cardinality</dt>
+	<dd>Font for the cardinalities on elements. This needs to be about
+	half height of the elment font. Default is SansSerif-PLAIN-8</dd>
+	<dt>x2svg.color.text</dt>
+	<dd>The color of element names. Default is black. See also <a
+		href="#color">below</a> on how the color needs to be given.</dd>
+	<dt><a name="subst">x2svg.comment.defaultText</a></dt>
+	<dd>A default comment text to be printed on diagrams. This text
+	supports the following substitutions:
+	<ul>
+		<li>{i}: name of the input file</li>
+		<li>{t}: date/time of creation</li>
+		<li>{u}: login of the user running x2svg</li>
+	</ul>
+	If one of those charcter combinations is found, it will be substituted
+	by the respective data.</dd>
+	<dt>x2svg.comment.defaultOn</dt>
+	<dd>If set to true, the default comment will be printed</dd>
+	<dt>x2svg.comment.font</dt>
+	<dd>The font of the comment</dd>
+	<dt>x2svg.comment.color</dt>
+	<dd>The color of the commet text. Default is black. See also <a
+		href="#color">below</a> on how the color needs to be given.</dd>
+	<dt>x2svg.font.attribute</dt>
+	<dd>The font used for redering attributes</dd>
+	<dt>x2svg.color.attribute</dt>
+	<dd>The color to render attributes</dd>
+	<dt>x2svg.parser.attributes</dt>
+	<dd>If set to true, the input parser will be signaled that
+	attributes should also be parsed. Can be overridden on the command
+	line. Default is false.
+	</dd>
+	<dt>x2svg.parser.comments</dt>
+	<dd>If set to true, the input parser will be signaled that
+	comments of elements and possibly attributes should also be parsed. Can
+	be overridden on the command line. Default is false.
+	</dd>
+        <dt>x2svg.draw.simple_shadow</dt>
+        <dd>If set to true, the shadow is not "anti-aliased", but only drawn in gray.
+        Default is false.
+    </dd>
+</dl>
+<h3><a name="color">Note about colors</a></h3>
+Colors need to be given as number. While this seems compliated at first,
+it is not if hex numbers are used like <code>0xrrggbb</code> with rr, gg
+and bb giving the red, green and blue parts as known from the web.
+
+<h3>Example</h3>
+<pre>
+x2svg.font.element=Times-PLAIN-12
+x2svg.font.cardinality=SansSerif-PLAIN-6
+x2svg.color.text=0xa02020
+
+x2svg.comment.defaultText=Created with http://bsd.de/x2svg/ at {t} from {i} for user {u}
+x2svg.comment.defaultOn=true
+x2svg.comment.font=SansSerif-PLAIN-8
+x2svg.comment.color=0x108020
+</pre></div>
+</html>

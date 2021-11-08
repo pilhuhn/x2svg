@@ -1,0 +1,256 @@
+<project name="x2svg" basedir="." default="all">
+	
+	<target name="all" depends="pull-dependencies,compile,package,tests" />
+	
+	<property name="fop" value="fop-0.95"/>
+	<property name="dtdparser" value="dtdparser-1.21"/>
+	<property name="testng" value="testng"/>
+	<property name="testng.version" value="5.7"/>
+		
+	<property name="version" value="1.2.1"/>
+	
+	<path id="class.path" description="Set up class path for compilation">
+		<fileset dir="lib/${dtdparser}/">
+		    <include name="*.jar"/>
+		</fileset>
+		<fileset dir="lib/${fop}/lib">
+		    <include name="*.jar"/>
+		</fileset>
+		<fileset dir="lib/${fop}/build">
+		    <include name="*.jar"/>
+		</fileset>
+		<fileset dir="${ant.library.dir}">
+			<include name="ant.jar"/>
+		</fileset>
+		<fileset dir="lib/${testng}-${testng.version}">
+			<include name="testng-${testng.version}-jdk15.jar"/>
+		</fileset>
+	</path>
+
+	<path id="run.path" description="Set up classpath for running tests etc.">
+		<fileset dir=".">
+    		<include name="x2svg.jar"/>
+		</fileset>
+		<path refid="class.path"/>
+	</path>
+
+	
+	<target name="init">
+		<mkdir dir="build"/>
+		<taskdef resource="testngtasks"
+			         classpathref="class.path"/>
+			
+	</target>
+	
+	<!-- Compiling the sources is split into two parts. One part is
+	  -  compiling the base sources in src/  another one the compilation of
+	  -  other sources. This is done to ensure that src/ has no dependncies to
+	  -  outsid sources
+	  -->
+	<target name="compile" depends="init,compile-main" description="compiles the sources">
+		<javac destdir="build" classpathref="class.path" debug="on">
+			<src path="gui-src"/>
+			<src path="test-src"/>
+		</javac>
+	</target>
+	
+	<target name="compile-main" depends="init" description="compiles the base sources">
+		<javac destdir="build" classpathref="class.path" debug="on">
+			<src path="src"/>
+		</javac>
+	</target>
+
+	
+	
+	<target name="package" depends="compile" description="builds the distribution">
+		<delete file="x2svg.jar"/>
+		<delete file="build/x2svg.properties"/>
+		<delete file="build/build.xml"/>
+		<jar destfile="x2svg.jar" basedir="build" manifest="etc/MANIFEST.MF" >
+			<fileset dir=".">
+				<include name="*.class"/>
+				<exclude name="x2svg.properties"/>
+				<exclude name="build.xml"/>
+			</fileset>
+			<fileset dir="src">
+				<include name="**/messages*.properties"/>
+			</fileset>
+			<fileset dir="gui-src">
+				<include name="**/messages*.properties"/>
+			</fileset>
+			<fileset dir="test-src">
+				<include name="**/messages*.properties"/>
+			</fileset>
+			<fileset dir="src/de/bsd/x2svg/ant">
+				<include name="X2SvgTasks.properties"/>
+				<include name="X2SvgTypes.properties"/>
+			</fileset>
+		</jar>
+	</target>
+	
+	
+	<target name="clean" description="cleans distribution files">
+		<delete dir="build"/>
+		<delete dir="bin"/>
+		<delete dir="out"/>
+	</target>
+	
+	<target name="clobber">
+		<antcall target="clean"/>
+		<delete dir="doc/javadoc"/>
+		<delete file="x2svg.jar"/>
+		<delete dir="out/"/>
+		<delete dir="test-output"/>
+	</target>
+	
+	
+	<target name="run-sample" description="Runs the application with sample input" depends="compile,package">
+		<mkdir dir="out/"/>
+
+		<echo>Converting sample.dtd</echo>
+		<java classname="de.bsd.x2svg.X2Svg" classpathref="run.path" fork="true">
+			<arg line="-c out/sample-dtd.pdf -c out/:pdf:png:jpg:tiff:eps -o out/sample-dtd.svg test-src/resources/sample.dtd root"/>
+		</java>
+
+		<echo>Converting sample.dtd (1 child level)</echo>
+		<java classname="de.bsd.x2svg.X2Svg" classpathref="run.path" fork="true">
+			<arg line="-c out/sample-dtd-small.pdf -c out/sample-dtd-small.png -o out/sample-dtd-small.svg test-src/resources/sample.dtd -d 1 root"/>
+		</java>
+
+		<echo>Converting x2svg.properties file</echo>
+		<copy todir="build/" file="x2svg.properties"/>
+		<java classname="de.bsd.x2svg.X2Svg" classpathref="run.path" fork="true">
+			<arg line="-c out/sample-props.pdf -o out/sample-props.svg x2svg.properties"/>
+		</java>
+		
+		<echo>Converting build.xml</echo>
+		<copy todir="build/" file="build.xml"/>
+		<java classname="de.bsd.x2svg.X2Svg" classpathref="run.path" fork="true">
+			<arg line="-c out/sample-ant.pdf -o out/sample-ant.svg build.xml"/>
+		</java>
+		
+		<echo>Converting recursive3.dtd</echo>
+		<java classname="de.bsd.x2svg.X2Svg" classpathref="run.path" fork="true">
+			<arg line="-c out/recursive3.png:png -o out/recursive3-dtd.svg test-src/resources/recursive3.dtd root"/>
+		</java>
+	</target>
+	
+	<target name="run-gui" description="Run the Gui version" depends="compile,package">
+		<java classname="de.bsd.x2svg.gui.X2SvgGui" 
+			  classpathref="class.path" 
+			  classpath="x2svg.jar"
+			  fork="true"
+			>
+		</java>
+	</target>
+	
+	<target name="javadoc" description="Builds the javadoc documentation">
+		<mkdir dir="doc/javadoc"/>
+		<javadoc bottom="" doctitle="x2svg" 
+			destdir="doc/javadoc" classpathref="class.path"
+			access="private"
+			version="true"
+			author="true"
+			windowtitle="x2svg api version ${version}"
+			source="1.5">
+			<fileset dir="src">
+				<include name="**/*.java"/>
+			</fileset>
+			<fileset dir="gui-src">
+				<include name="**/*.java"/>
+			</fileset>
+			<fileset dir="test-src">
+				<include name="**/*.java"/>
+			</fileset>
+			<bottom><![CDATA[<i>x2svg version ${version}]]></bottom>
+		</javadoc>
+	</target>
+	
+	<target name="tests" description="Run unit tests" depends="package,init">
+		<testng classpathref="run.path"
+			outputDir="test-output"
+			
+		>
+			<classfileset dir="build" includes="de/bsd/x2svg/test/**/*.class" />
+		</testng>
+	</target>
+	
+	<target name="make-release" depends="clobber,javadoc">
+		<delete file="/tmp/x2svg-dist-${version}.zip"/>
+		<jar destfile="/tmp/x2svg-dist-${version}.zip">
+			<fileset dir=".">
+				<include name="src/**"/>
+				<include name="gui-src/**"/>
+				<include name="test-src/**"/>
+				<include name="doc/**"/>
+				<include name="etc/**"/>
+				<include name=".classpath"/>
+				<include name=".projekt"/>
+				<include name="build.xml"/>
+				<include name="run*.sh"/>
+				<include name="run*.bat"/>
+				<include name="convert.bat"/>
+				<include name="convert.sh"/>
+				<include name="sample.dtd"/>
+				<include name="x2svg.properties"/>
+			</fileset>
+		</jar>
+		<copy file="/tmp/x2svg-dist-${version}.zip" todir="."/>
+	</target>
+	
+	
+	<target name="pull-dependencies" description="pulls required files from various locations and install them in lib/">
+		<condition property="fop-present">
+			<available  property="fop.present" file="lib/${fop}" type="dir"/>
+		</condition>
+	    <antcall target="get-fop"/>
+		
+		<condition property="dtdparser-present">
+			<available  property="dtdparser.present" file="lib/${dtdparser}" type="dir"/>
+		</condition>
+		<antcall target="get-dtdparser"/>
+		
+		<condition property="testng-present">
+			<available property="testng.present" file="lib/${testng}-${testng.version}" type="dir"/>
+		</condition>
+		<antcall target="get-testng"/>
+		
+		<condition property="ant-present">
+			<available property="ant.present" file="lib/ant.jar" type="file"/>
+		</condition>
+		<antcall target="get-ant"/>
+	</target>
+	
+	<target name="get-fop" unless="fop-present">
+		<echo>Getting FOP</echo>
+		<get src="http://ftp.fernuni-hagen.de/ftp-dir/pub/mirrors/www.apache.org/xmlgraphics/fop/binaries/${fop}-bin.zip"
+			dest="${java.io.tmpdir}/${fop}-bin.zip"
+			verbose="on"
+		/>
+		<unzip dest="lib/" src="${java.io.tmpdir}/${fop}-bin.zip"/>
+	</target>
+	
+	<target name="get-dtdparser" unless="dtdparser-present">
+		<echo>Getting Wutka DTD Parser</echo>
+		<get src="http://wutka.com/download/${dtdparser}.zip"
+			dest="${java.io.tmpdir}/${dtdparser}.zip"
+			verbose="on"
+		/>
+		<unzip dest="lib/" src="${java.io.tmpdir}/${dtdparser}.zip"/>
+	</target>
+
+	<target name="get-testng" unless="testng-present">
+		<echo>Getting TestNG</echo>
+		<get src="http://testng.org/${testng}-${testng.version}.zip"
+			dest="${java.io.tmpdir}/${testng}.zip"
+			verbose="on"
+		/>
+		<unzip dest="lib/" src="${java.io.tmpdir}/${testng}.zip"/>
+	</target>
+	
+	<target name="get-ant" unless="ant-present" 
+			description="Pull ant.jar from the ant dist and put it into lib, so the editor can rely on it">
+		<echo>Getting ant.jar</echo>
+		<copy file="${ant.library.dir}/ant.jar" tofile="lib/ant.jar"/>
+	</target>
+</project>

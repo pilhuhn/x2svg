@@ -1,0 +1,23 @@
+<html>
+<body>
+This package contains parsers for the various input files.
+Those parsers need to implement the interface {@link de.bsd.x2svg.parsers.InputParser}.
+This interface provides a number of methods, to more or less live on their own, so that
+adding a new parser is done by implementing those interfaces. The loader in
+{@link de.bsd.x2svg.ParserLoader} can then determine all important parameters,
+instantiate and return the right parser without changes in other parts of the code.
+<p/>
+Parsers register a file suffix they are trigered upon, but this automatic mechanism
+can be overriden by specifiying an explicit working mode on the command line (think
+e.g. of an XML Schema, where the suffix would .xsd, but which was saved as .xml, so the
+automatic determination of the parser to take would fail).
+<p/>
+When parsers got first loaded by the system as plugins, they need to be instantiated
+in order to obtain the mode, file suffix and help line from them. So if you are writing
+an {@link de.bsd.x2svg.parsers.InputParser} which is expenisve to set up (e.g. 
+getting data from a remote location), you might only want to do this when the 
+{@link de.bsd.x2svg.parsers.InputParser#parseInput()} method is called.
+<p/>
+@since 1.0
+</body>
+</html>

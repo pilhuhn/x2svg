@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="content-language" content="de">
+<meta http-equiv="language" content="de">
+<link rel="stylesheet" href="standard.css" type="text/css" media="screen">
+<meta http-equiv="keywords" content="Java, svg, dtd, layout, pdf">
+<meta NAME="robots" CONTENT="index,follow">
+<title>x2svg</title>
+</head>
+<body>
+<div class="werbung" id="werbung">
+<a href="http://bsd.de/e3fu/">My EJB3 book</a><p/>
+<a href="http://labs.jboss.com/portal/jbossejb3">EJB 3 at JBoss</a>
+<p/>
+<a href="http://sourceforge.net"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=199130&amp;type=1" width="88" height="31" border="0" alt="SourceForge.net Logo" /></a>
+</div>
+<div class="indent">
+[ Start ]
+[ <a href="readme.html">Install etc.</a> ]
+[ <a href="changes.html">Changelog</a> ]
+[ <a href="http://sf.net/projects/x2svg/">SourceForge</a> ]
+[ <a href="symbols.html">Graph symbols</a> ]
+[ <a href="properties.html">Properties</a> ]
+[ <a href="http://x2svg.sf.net/javadoc/">JavaDoc</a> ]
+[ <a href="http://freshmeat.net/projects/x2svg/">FreshMeat</a> ]
+[ <a href="http://www.ohloh.net/projects/x2svg">Ohloh</a> ]
+[ <a href="http://x2svg.svn.sourceforge.net/viewvc/x2svg/">Browse source</a> ]
+<h1>x2svg</h1>
+
+x2svg is a tool to render tree like structures graphically as
+scalable vector graphic (SVG). The SVG can then be converted to other
+formats like e.g. PDF or raster formats like PNG. The PDF converter
+is already built into x2svg. See below for a list of input formats.
+<p/>
+Here is an example:<br/>
+This DTD
+<pre>
+&lt;!-- The root element of this DTD--&gt;
+&lt;!ELEMENT root (a? ,b+ ,c*)&gt;
+&lt;!--A simple character node--&gt;
+&lt;!ELEMENT a (#PCDATA)&gt;
+&lt;!--A selection of d or e--&gt;
+&lt;!ELEMENT b (a,(d|e|f?|g)*)&gt;
+&lt;!ELEMENT c (f+,hello*)&gt;
+&lt;!ELEMENT d (#PCDATA)&gt;
+&lt;!ELEMENT e (f+|d?|g*)&gt;
+&lt;!ELEMENT f (#PCDATA)&gt;
+&lt;!ELEMENT hello (#PCDATA)&gt;
+&lt;!ELEMENT g EMPTY&gt;
+</pre>
+will result in a diagram like this:<br/>
+
+<img src="img/sample.png" size="70%" alt="Sample output" title="Sample output of a x2svg run"/>
+<br/>
+Currently, there are parsers for
+<ul>
+<li>DTD</li>
+<li>Java properties files</li>
+<li>Ant build.xml files</li>
+<li>XML Schema (alpha quality)</li>
+</ul>
+Someone :) should
+improve the parser for XML Schema documents. You can find more ideas on
+how to contribute on the <a href="todo.html">Todos</a> page.
+<h2>Install etc.</h2>
+See this <a href="readme.html">file</a>. It is also contained in the distribution in the doc/ directory.
+<p/>
+<h2>Download the package</h2>
+You can download the sources for
+<ul>
+    <li>
+        <a href="http://sourceforge.net/project/showfiles.php?group_id=199130&package_id=236217&release_id=613166">x2svg-dist-1.2.zip</a>
+    </li>
+    <li>
+        <a href="http://sourceforge.net/project/showfiles.php?group_id=199130&package_id=236217&release_id=598806">x2svg-dist-1.2.zip</a>
+    </li>
+    <li>
+        <a href="http://sourceforge.net/project/showfiles.php?group_id=199130&package_id=236217&release_id=595155">x2svg-dist-1.2-beta3.zip</a>
+    </li>
+<li>
+	<a href="http://sourceforge.net/project/showfiles.php?group_id=199130&package_id=236217&release_id=591919">x2svg-dist-1.2-beta2.zip</a>
+</li>
+<li>
+	<a href="http://sourceforge.net/project/showfiles.php?group_id=199130&package_id=236217&release_id=531824">x2svg-dist-1.2-beta1.zip</a>
+</li>
+<li>
+<a href="http://sourceforge.net/project/showfiles.php?group_id=199130&package_id=236217&release_id=528492">Release 1.1-gui</a> - basically the 1.1 release plus a simple GUI.
+</li>
+<li>
+<a href="http://freshmeat.net/redir/x2svg/69626/url_zip/showfiles.php">
+x2svg-dist-1.1.zip</a>
+<li>
+<a href="http://freshmeat.net/redir/x2svg/69626/url_zip/showfiles.php">
+x2svg-dist-1.1beta1.zip</a>
+</li>
+<li>
+<a href="http://freshmeat.net/redir/x2svg/69626/url_zip/x2svg-dist-1.0.zip">release 1.0</a>
+</li>
+<li>
+<a href="http://freshmeat.net/redir/x2svg/69626/url_zip/x2svg-dist-1.0beta3.zip">1.0beta3</a>
+</li>
+<li>
+<a href="http://freshmeat.net/redir/x2svg/69626/url_zip/x2svg-dist-1.0beta2.zip">1.0beta2</a>
+</li>
+<li>
+<a href="http://freshmeat.net/redir/x2svg/69626/url_zip/x2svg-dist-1.0beta1.zip">1.0beta1</a>
+</li>
+</ul>
+<h2>Source code</h2>
+Source code is availale in the above mentioned Download section.
+If you want to access to the code between releases, then have a
+look at the <a href="http://sf.net/projects/x2svg/">Project page at SourceForge</a> where you can browse the subversion repository.
+<p/>
+Javadoc is also viewable <a href="http://x2svg.sf.net/javadoc/">online</a>
+<h2>Changes</h2>
+You can browse the <a href="changes.html">here</a> or have a look at the
+file changes.html in the doc/ folder of the distribution.
+<h2>Contact</h2>
+If you have any questions or comments, please contact me at
+<a href="mailto:hwr@pilhuhn.de?Subject=x2svg comment">hwr@pilhuhn.de</a>
+<p/>
+The <a href="http://sf.net/projects/x2svg/">Project page at SourceForge</a> also links to the project mailing lists.
+<h2>Related...</h2>
+This section shows some links to related projects or web pages
+<ul>
+<li><a href="http://dynvocation.selfip.net/xsd4j/">xsd4j</a> from Project dynvocation at TU Dresden. This library is able to parse, check and visualize XML Schema documents.</li>
+<li><a href="http://www.selfsvg.info">SelfSVG</a> - tutorials about SVG.</li>
+<li><a href="http://www.datenverdrahten.de/svglbc/">SVG - Learning by Coding</a>: German site with with many SVG examples
+<li><a href="http://freshmeat.net/projects/svgcharter/">SVG Charter</a> - generates chart diagrams in SVG.</li>
+<li><a href="http://www.treebuilder.de/">Treebuilder</a> - a blog about SVG. Contains lots of cool stuff.</li>
+<li><a href="http://blog.codedread.com/archives/category/technology/software/web/svg/">Jeff Schiller's blog on SVG</a></li>
+<li><a href="http://www.codedread.com/svg-support.php">SVG support page</a> - by Jeff Schiller. Shows how much of the SVG standard is supported by various browsers / viewers.</li>
+<li><a href="http://www.svgbasics.com/">SVGBasics</a> tutorial</li>
+<li><a href="http://matra.sourceforge.net/">Matra DTD parser (and tree generator)</a></li>
+<li><a href="http://www.rpbourret.com/dtdparser/index.htm">DTDParser</a></li> - by Ronald Bourret
+</ul>
+<hr/>
+</div>
+</body>
+</html>
+
