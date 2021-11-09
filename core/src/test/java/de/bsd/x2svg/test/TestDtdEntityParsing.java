@@ -1,16 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2007 Heiko W. Rupp. 	All rights reserved. 
- * 
+ * Copyright (c) 2007 Heiko W. Rupp. 	All rights reserved.
+ *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation; either version 2.1 of
  * the License, or (at your option) any later version.
- * 
+ *
  *  This software is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  *  Lesser General Public License for more details.
- *  
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this software; if not, write to the Free
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
@@ -30,9 +30,9 @@ import de.bsd.x2svg.parsers.InputParser;
  * Test parsing of DTDs
  * @author hwr@pilhuhn.de
  */
-public class TestDtdEntityParsing 
+public class TestDtdEntityParsing
 {
-	private static final String BASEDIR="test-src/";
+	private static final String BASEDIR="src/test/";
 
 	/**
 	 * Test the simple dtd.
@@ -55,5 +55,5 @@ public class TestDtdEntityParsing
 		c = c.children.get(0);
 		assert c.name.equals("world");
 	}
-	
+
 }

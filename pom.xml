@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>de.bsd.x2svg</groupId>
+    <artifactId>parent</artifactId>
+    <version>1.2</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <fop.version>2.6</fop.version>
+        <dtdparser.version>1.21</dtdparser.version>
+        <maven.compiler.source>14</maven.compiler.source>
+        <maven.compiler.target>14</maven.compiler.target>
+
+        <xerces.version>2.12.1</xerces.version>
+        <ant.version>1.10.12</ant.version>
+        <testng.version>7.4.0</testng.version>
+    </properties>
+
+
+    <modules>
+        <module>core</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>fop</artifactId>
+            <version>${fop.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.wutka</groupId>
+            <artifactId>dtdparser</artifactId>
+            <version>${dtdparser.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+            <version>${xerces.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.ant</groupId>
+            <artifactId>ant</artifactId>
+            <version>${ant.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

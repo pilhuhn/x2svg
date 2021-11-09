@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
  */
 public class TestDtdParsing
 {
-	private static final String BASEDIR="test-src/";
+	private static final String BASEDIR="src/test/";
 
 	/**
 	 * Test the simple dtd.
