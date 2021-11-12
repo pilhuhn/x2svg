@@ -5,6 +5,7 @@
 
 # Project exclude paths
 /classes/
+target
 /bin/
 /build/
 /test-output/
@@ -12,3 +13,4 @@
 *.jar
 **/*.class
 
+.DS_Store/

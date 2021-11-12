@@ -23,7 +23,7 @@ package de.bsd.x2svg;
  * the lower bound and to the upper. If 'from' is 0, the Cardinality is optional.
  * If the flag 'empty' is set, then the Cardinality is optional, but from
  * is marked as the empty string. This is done to allow for rendering of elements
- * like a non-optional element, while still having a an empty 'from value.
+ * like a non-optional element, while still having an empty 'from value.
  *
  * @author hwr@pilhuhn.de
  */
@@ -73,7 +73,7 @@ public class Cardinality {
     public Cardinality(int from, int to) {
         this.from = String.valueOf(from);
         this.to = String.valueOf(to);
-        if (to == -1)
+        if (to == -1 || to == Integer.MAX_VALUE)
             this.to = "*";
     }
 
@@ -136,15 +136,15 @@ public class Cardinality {
         if (empty)
             return false; // Not optional, so render solid
         return from == null || from.equals("0");
-    }
+	}
 
 
-    /**
-     * @return the lower value of the cardinality pair
-     */
-    public String getFrom() {
-        return from;
-    }
+	/**
+	 * @return the lower value of the cardinality pair
+	 */
+	public String getFrom() {
+		return from;
+	}
 
     /**
      * @return the higher value of the cardinality pair

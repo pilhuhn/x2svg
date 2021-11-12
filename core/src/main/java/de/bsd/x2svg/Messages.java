@@ -27,26 +27,26 @@ import java.util.ResourceBundle;
  * @author hwr@pilhuhn.de
  * @see java.util.ResourceBundle
  */
-public class Messages {
-    private static final String BUNDLE_NAME = "de.bsd.x2svg.messages"; //$NON-NLS-1$
+public class Messages
+{
+	private static final String BUNDLE_NAME = "messages"; //$NON-NLS-1$
 
-    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle
-            .getBundle(BUNDLE_NAME);
+//	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle
+//			.getBundle(BUNDLE_NAME);
 
     private Messages() {
     }
 
-    /**
-     * Get the I18N'ed string for the passed key
-     *
-     * @param key MessageKey
-     * @return A I18N'ed string or the default.
-     */
-    public static String getString(String key) {
-        try {
-            return RESOURCE_BUNDLE.getString(key);
-        } catch (MissingResourceException e) {
-            return '!' + key + '!';
-        }
-    }
+	/**
+	 * Get the I18N'ed string for the passed key
+	 * @param key MessageKey
+	 * @return A I18N'ed string or the default.
+	 */
+	public static String getString(String key) {
+//		try {
+//			return RESOURCE_BUNDLE.getString(key);
+//		} catch (MissingResourceException e) {
+			return '!' + key + '!';
+//		}
+	}
 }

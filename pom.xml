@@ -16,6 +16,8 @@
         <xerces.version>2.12.1</xerces.version>
         <ant.version>1.10.12</ant.version>
         <testng.version>7.4.0</testng.version>
+        <json-schema-validator.version>2.2.14</json-schema-validator.version>
+        <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
     </properties>
 
 
@@ -44,6 +46,12 @@
             <artifactId>ant</artifactId>
             <version>${ant.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.java-json-tools</groupId>
+            <artifactId>json-schema-validator</artifactId>
+            <version>${json-schema-validator.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>

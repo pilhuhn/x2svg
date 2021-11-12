@@ -24,7 +24,7 @@ import org.apache.batik.svggen.SVGGraphics2D;
 
 /**
  * Inheritance content model specifies that the right side is a not the
- * "real" graph, but an item to be substitutet.
+ * "real" graph, but an item to be substituted.
  * <p/>
  * Example: <br/>
  * <img src="{@docRoot}/../img/SubstitutionModel.png"/>
@@ -37,7 +37,7 @@ import org.apache.batik.svggen.SVGGraphics2D;
 public class SubstitutionModel extends ContentModel {
 
     /**
-     * Draw the ChoiceModle content box and add an inheritance arrow to it.
+     * Draw the ChoiceMode content box and add an inheritance arrow to it.
      *
      * @see de.bsd.x2svg.draw.ContentModel#draw(org.apache.batik.svggen.SVGGraphics2D, int, int)
      */

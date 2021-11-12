@@ -85,8 +85,12 @@ public class AnonymousContainer extends ElementBox {
                 SequenceModel sm = new SequenceModel();
                 sm.draw(svg, x7, yHalf - 7);
                 break;
-            default:
-                System.out.println("unknown case ...");
+			case TYPE_ON_RIGHT:
+				TypeModel tm = new TypeModel();
+				tm.draw(svg, x7, yHalf-7);
+				break;
+			default:
+				System.out.println("unknown case for container content model..." + content.name());
         }
 
         // line to right neighbor
@@ -94,7 +98,5 @@ public class AnonymousContainer extends ElementBox {
         svg.setColor(Color.GRAY);
         svg.drawLine(topX + 34 + 2, yHalf - 1, topX + 69, yHalf - 1);
         svg.setColor(Color.BLACK);
-
-
     }
 }

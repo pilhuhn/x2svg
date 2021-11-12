@@ -1,0 +1,81 @@
+{
+  "definitions" : {
+    "record:com.redhat.cloud.notifications.ingress.Action" : {
+      "type" : "object",
+      "required" : [ "bundle", "application", "event_type", "timestamp", "account_id", "context", "events", "version", "recipients" ],
+      "additionalProperties" : false,
+      "properties" : {
+        "bundle" : {
+          "type" : "string",
+          "pattern" : "[a-z][a-z_0-9-]*"
+        },
+        "application" : {
+          "type" : "string",
+          "pattern" : "[a-z][a-z_0-9-]*"
+        },
+        "event_type" : {
+          "type" : "string",
+          "pattern" : "[a-z][a-z_0-9-]*"
+        },
+        "timestamp" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "account_id" : {
+          "type" : "string"
+        },
+        "context" : {
+          "type" : "string"
+        },
+        "events" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/record:com.redhat.cloud.notifications.ingress.Event"
+          }
+        },
+        "version" : {
+          "default" : "v1.0.0",
+          "type" : "string"
+        },
+        "recipients" : {
+          "default" : [ ],
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/record:com.redhat.cloud.notifications.ingress.Recipient"
+          }
+        }
+      }
+    },
+    "record:com.redhat.cloud.notifications.ingress.Event" : {
+      "type" : "object",
+      "required" : [ "metadata", "payload" ],
+      "additionalProperties" : false,
+      "properties" : {
+        "metadata" : {
+          "$ref" : "#/definitions/record:com.redhat.cloud.notifications.ingress.Metadata"
+        },
+        "payload" : {
+          "default" : "{}",
+          "type" : "string"
+        }
+      }
+    },
+    "record:com.redhat.cloud.notifications.ingress.Metadata" : {
+      "enum" : [ { } ]
+    },
+    "record:com.redhat.cloud.notifications.ingress.Recipient" : {
+      "type" : "object",
+      "required" : [ "only_admins", "ignore_user_preferences" ],
+      "additionalProperties" : false,
+      "properties" : {
+        "only_admins" : {
+          "type" : "boolean"
+        },
+        "ignore_user_preferences" : {
+          "type" : "boolean"
+        }
+      }
+    }
+  },
+  "$ref" : "#/definitions/record:com.redhat.cloud.notifications.ingress.Action"
+}
