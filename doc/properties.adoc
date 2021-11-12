@@ -1,0 +1,75 @@
+= Properties file
+
+This page explains the settings of the properties file `x2svg.properties`.
+Below you will find an example of this file.
+
+Loading rules are (from 1.2beta1 on):
+
+. Try a location passed on command line via -P switch
+. Try to load `x2svg.properties` from the current
+	directory
+. Try to load `x2svg.properties` from classpath
+
+
+== List of properties
+
+x2svg.font.element::
+Font to use for element names. Default is SansSerif-PLAIN-12
+x2svg.font.cardinality::
+Font for the cardinalities on elements. This needs to be about
+half height of the element font. Default is SansSerif-PLAIN-8
+x2svg.color.text::
+The color of element names. Default is black. See also below on how the color needs to be given.
+x2svg.comment.defaultText::
+A default comment text to be printed on diagrams. This text
+supports the following substitutions:
+	* {i}: name of the input file
+	* {t}: date/time of creation
+	* {u}: login of the user running x2svg +
+
+If one of those character combinations is found, it will be substituted
+by the respective data.
+
+x2svg.comment.defaultOn::
+If set to true, the default comment will be printed
+x2svg.comment.font::
+The font of the comment
+x2svg.comment.color::
+The color of the comment text. Default is black. See also below on how the color needs to be given.
+x2svg.font.attribute::
+The font used for rendering attributes
+x2svg.color.attribute::
+The color to render attributes
+x2svg.parser.attributes::
+If set to true, the input parser will be signaled that
+attributes should also be parsed. Can be overridden on the command
+line. Default is false.
+
+x2svg.parser.comments::
+If set to true, the input parser will be signaled that
+comments of elements and possibly attributes should also be parsed. Can
+be overridden on the command line. Default is false.
+
+x2svg.draw.simple_shadow::
+If set to true, the shadow is not "anti-aliased", but only drawn in gray.
+Default is false.
+
+
+=== Note about colors
+Colors need to be given as number. While this seems complicated at first,
+it is not if hex numbers are used like `0xrrggbb` with rr, gg
+and bb giving the red, green and blue parts as known from the web.
+
+== Example
+
+[source,properties]
+----
+x2svg.font.element=Times-PLAIN-12
+x2svg.font.cardinality=SansSerif-PLAIN-6
+x2svg.color.text=0xa02020
+
+x2svg.comment.defaultText=Created with http://bsd.de/x2svg/ at {t} from {i} for user {u}
+x2svg.comment.defaultOn=true
+x2svg.comment.font=SansSerif-PLAIN-8
+x2svg.comment.color=0x108020
+----

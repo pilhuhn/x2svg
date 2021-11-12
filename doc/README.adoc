@@ -90,3 +90,5 @@ It is as well possible to give an output directory with a file type only
 directory _foo/_ and
 the filename will be derived from the input filename.
 
+The file link:properties.adoc[] describes the `x2svg.properties` file that can be used to further customize x2svg.
+The used symbols are described in link:symbols.adoc[].
