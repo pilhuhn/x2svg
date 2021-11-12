@@ -8,39 +8,36 @@ package de.bsd.x2svg.util;
  * @author hwr@pilhuhn.de
  *
  */
-public class SantasLittleHelper
-{
+public class SantasLittleHelper {
 
-	/**
-	 * Return a file name with appended or changed suffix.
-	 * @param fileName the original file name
-	 * @param suffix the suffix *without* the . (i.E. 'png' and not '.png')
-	 * @return a new file name with the appended suffix
-	 */
-	public static String attachSuffixToFileName(String fileName, String suffix)
-	{
-		int pos = fileName.lastIndexOf('.');
-		if (pos==-1)
-			return fileName + "." + suffix;
-		else {
-			String baseName = fileName.substring(0, pos);
-			return baseName + "." + suffix;
-		}
-	}
+    /**
+     * Return a file name with appended or changed suffix.
+     * @param fileName the original file name
+     * @param suffix the suffix *without* the . (i.E. 'png' and not '.png')
+     * @return a new file name with the appended suffix
+     */
+    public static String attachSuffixToFileName(String fileName, String suffix) {
+        int pos = fileName.lastIndexOf('.');
+        if (pos == -1)
+            return fileName + "." + suffix;
+        else {
+            String baseName = fileName.substring(0, pos);
+            return baseName + "." + suffix;
+        }
+    }
 
-	/**
-	 * Return the filename part of the passed file system path.
-	 * @param path Path to a file on the file system.
-	 * @return the filename part of the passed path.
-	 */
-	public static String getFileNameFromPath(String path)
-	{
-		String separator = System.getProperty("file.separator");
-		int pos = path.lastIndexOf(separator);
-		if (pos == -1)
-			return path;
-        return path.substring(pos+1);
-	}
+    /**
+     * Return the filename part of the passed file system path.
+     * @param path Path to a file on the file system.
+     * @return the filename part of the passed path.
+     */
+    public static String getFileNameFromPath(String path) {
+        String separator = System.getProperty("file.separator");
+        int pos = path.lastIndexOf(separator);
+        if (pos == -1)
+            return path;
+        return path.substring(pos + 1);
+    }
 
     /**
      * Helper method to provide a string with spaces of length howMany
@@ -49,7 +46,7 @@ public class SantasLittleHelper
      */
     public static String spaces(int howMany) {
         StringBuilder b = new StringBuilder();
-        for ( int i = 0 ; i< howMany ; i ++) {
+        for (int i = 0; i < howMany; i++) {
             b.append(' ');
         }
         return b.toString();

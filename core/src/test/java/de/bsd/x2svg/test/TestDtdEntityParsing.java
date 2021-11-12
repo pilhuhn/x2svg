@@ -28,32 +28,32 @@ import de.bsd.x2svg.parsers.InputParser;
 
 /**
  * Test parsing of DTDs
+ *
  * @author hwr@pilhuhn.de
  */
-public class TestDtdEntityParsing
-{
-	private static final String BASEDIR="src/test/";
+public class TestDtdEntityParsing {
+    private static final String BASEDIR = "src/test/";
 
-	/**
-	 * Test the simple dtd.
-	 * @throws Exception on any (assertion) error
-	 */
-	@Test
-	public void testEntityDtd() throws Exception
-	{
-		File input = new File(BASEDIR + "resources/entity.dtd");
-		InputParser ip = new DtdParser();
-		ip.setParserOptions(new String[] {"root"});
-		ip.setInputFile(input);
-		Container cont = ip.parseInput();
-		assert cont != null : "The returned container was null, but should not be";
-		assert cont.name.equals("root") : "The root container was not named 'root'";
-		assert cont.children.size()==1 : "root did not have 1 child";
-		Container c = cont.children.get(0);
-		assert c.name.equals("hello");
-		assert c.children.size()==1;
-		c = c.children.get(0);
-		assert c.name.equals("world");
-	}
+    /**
+     * Test the simple dtd.
+     *
+     * @throws Exception on any (assertion) error
+     */
+    @Test
+    public void testEntityDtd() throws Exception {
+        File input = new File(BASEDIR + "resources/entity.dtd");
+        InputParser ip = new DtdParser();
+        ip.setParserOptions(new String[]{"root"});
+        ip.setInputFile(input);
+        Container cont = ip.parseInput();
+        assert cont != null : "The returned container was null, but should not be";
+        assert cont.name.equals("root") : "The root container was not named 'root'";
+        assert cont.children.size() == 1 : "root did not have 1 child";
+        Container c = cont.children.get(0);
+        assert c.name.equals("hello");
+        assert c.children.size() == 1;
+        c = c.children.get(0);
+        assert c.name.equals("world");
+    }
 
 }

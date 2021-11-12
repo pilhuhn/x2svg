@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.bsd.x2svg.outputConverter;
 
@@ -13,64 +13,60 @@ import org.apache.fop.render.ps.EPSTranscoder;
 import org.apache.fop.svg.PDFTranscoder;
 
 /**
- * Factory that returns transcoders that can be used to 
+ * Factory that returns transcoders that can be used to
  * convert from SVG into the respective target format
  * @author hwr@pilhuhn.de
  *
  */
-public class SVGTranscoderFactory 
-{
+public class SVGTranscoderFactory {
 
-	/**
-	 * This class should not be instantiated
-	 */
-	private SVGTranscoderFactory()
-	{
-		// intentionally left blank
-	}
-	
-	/**
-	 * Obtain a transcoder for the passed output type. Only types encoded in
-	 * {@link OutputType} are supported.
-	 * @param type Type of output to generate
-	 * @return a transcoder for the given type 
-	 */
-	static SVGAbstractTranscoder getTranscoderForOutputType(OutputType type) 
-	{
-		
-		SVGAbstractTranscoder tc = null;
-		
-		switch(type) {
-			case PNG:
-				tc = new PNGTranscoder();
-				tc.addTranscodingHint(PNGTranscoder.KEY_BACKGROUND_COLOR, Color.WHITE);
-				break;
-			case PDF:
-				tc = new PDFTranscoder();
-				break;
-			case TIFF:
-				tc = new TIFFTranscoder();
-				break;
-			case JPG:
-				tc = new JPEGTranscoder();
-				break;
-			case EPS:
-				tc = new EPSTranscoder();
-				break;
-		}
-		
-		return tc;
-	}
-	
-	
-	/**
-	 * Obtain a transcoder for the passed output type
-	 * @param type Type of output to generate
-	 * @return a transcoder for the given type 
-	 */
-	protected static SVGAbstractTranscoder getTranscoderForOutputType(String type)
-	{
-		OutputType ot = OutputType.valueOf(type.toUpperCase());
-		return getTranscoderForOutputType(ot);
-	}
+    /**
+     * This class should not be instantiated
+     */
+    private SVGTranscoderFactory() {
+        // intentionally left blank
+    }
+
+    /**
+     * Obtain a transcoder for the passed output type. Only types encoded in
+     * {@link OutputType} are supported.
+     * @param type Type of output to generate
+     * @return a transcoder for the given type
+     */
+    static SVGAbstractTranscoder getTranscoderForOutputType(OutputType type) {
+
+        SVGAbstractTranscoder tc = null;
+
+        switch (type) {
+            case PNG:
+                tc = new PNGTranscoder();
+                tc.addTranscodingHint(PNGTranscoder.KEY_BACKGROUND_COLOR, Color.WHITE);
+                break;
+            case PDF:
+                tc = new PDFTranscoder();
+                break;
+            case TIFF:
+                tc = new TIFFTranscoder();
+                break;
+            case JPG:
+                tc = new JPEGTranscoder();
+                break;
+            case EPS:
+                tc = new EPSTranscoder();
+                break;
+        }
+
+        return tc;
+    }
+
+
+    /**
+     * Obtain a transcoder for the passed output type
+     * @param type Type of output to generate
+     * @return a transcoder for the given type
+     */
+    protected static SVGAbstractTranscoder getTranscoderForOutputType(String type) {
+        OutputType ot = OutputType.valueOf(type.toUpperCase());
+        return getTranscoderForOutputType(ot);
+    }
 }

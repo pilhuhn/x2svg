@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.bsd.x2svg.draw;
 
@@ -17,41 +17,37 @@ import de.bsd.x2svg.RuntimeProperties;
  * Example: <br/>
  * <img src="{@docRoot}/../img/abstractElement.png"/>
  * <p/>
-
  * @author hwr@pilhuhn.de
  * @since 1.2
  */
-public class AbstractElement extends ElementBox 
-{
+public class AbstractElement extends ElementBox {
 
-	/**
-	 * Constructor to use
-	 * @param name The name of the element
-	 * @param card The cardinality
-	 */
-	public AbstractElement(String name, Cardinality card)
-	{
-		super(name,card);
-		textColor = RuntimeProperties.getInstance().getTextColor();
-		
-	}
+    /**
+     * Constructor to use
+     * @param name The name of the element
+     * @param card The cardinality
+     */
+    public AbstractElement(String name, Cardinality card) {
+        super(name, card);
+        textColor = RuntimeProperties.getInstance().getTextColor();
 
-	@Override
-	public void draw(SVGGraphics2D svg, int topX, int topY, int width, int height, boolean isText, boolean isEmpty)
-	{
-		super.draw(svg, topX, topY, width, height, isText, isEmpty );
-		int halfHeight = RuntimeProperties.getInstance().getFontHeight() / 2;
+    }
 
-		svg.setColor(textColor);
-		svg.setFont(RuntimeProperties.getInstance().getFont());
-		svg.drawString(name, topX+10, topY  + halfHeight); // center ?
+    @Override
+    public void draw(SVGGraphics2D svg, int topX, int topY, int width, int height, boolean isText, boolean isEmpty) {
+        super.draw(svg, topX, topY, width, height, isText, isEmpty);
+        int halfHeight = RuntimeProperties.getInstance().getFontHeight() / 2;
 
-		int endX = topX+width;
-		
-		svg.setColor(Color.BLACK);
+        svg.setColor(textColor);
+        svg.setFont(RuntimeProperties.getInstance().getFont());
+        svg.drawString(name, topX + 10, topY + halfHeight); // center ?
 
-		// Now draw the 'A', that denotes this as abstract
-		svg.setFont(RuntimeProperties.getInstance().getFontSmall());
-		svg.drawString("A", endX-6, topY+2);
-	}
+        int endX = topX + width;
+
+        svg.setColor(Color.BLACK);
+
+        // Now draw the 'A', that denotes this as abstract
+        svg.setFont(RuntimeProperties.getInstance().getFontSmall());
+        svg.drawString("A", endX - 6, topY + 2);
+    }
 }

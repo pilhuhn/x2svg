@@ -10,40 +10,38 @@ import de.bsd.x2svg.outputConverter.OutputType;
 
 /**
  * The output type, that acts as a wrapper for a collection of output formats.
- * 
+ *
  * @author gfloodgate
  * @since 1.1
  */
-public class Output extends DataType
-{
+public class Output extends DataType {
 
-    /** The collection of formats to output. */
-    private Set<OutputType> types = new HashSet<OutputType>();
+    /**
+     * The collection of formats to output.
+     */
+    private final Set<OutputType> types = new HashSet<OutputType>();
 
 
     /**
      * Add an output format to the format collection.
-     * 
+     *
      * @param type The <code>format</code> ant type to add.
      */
-    public void addConfiguredFormat(final Format type)
-    {
+    public void addConfiguredFormat(final Format type) {
         final OutputType outputType = type.getOutputType();
-        if (outputType != null)
-        {
+        if (outputType != null) {
             types.add(outputType);
         }
     }
-    
-    
+
+
     /**
      * Get the set of output formats in this collection.
-     * 
+     *
      * @return A read-only set of output format types in this conversion collection.
      */
-    public Set<OutputType> getOutputTypes()
-    {
+    public Set<OutputType> getOutputTypes() {
         return Collections.unmodifiableSet(types);
     }
-    
+
 }

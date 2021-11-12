@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.bsd.x2svg.outputConverter;
 
@@ -9,17 +9,15 @@ package de.bsd.x2svg.outputConverter;
  * @author hwr@pilhuhn.de
  *
  */
-public class ConversionException extends Exception 
-{
-	/** serial Version UUID	 */
-	private static final long serialVersionUID = 1L;
+public class ConversionException extends Exception {
+    /** serial Version UUID	 */
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * Constructor
-	 * @param reason why did the conversion fail?
-	 */
-	ConversionException(String reason)
-	{
-		super(reason);
-	}
+    /**
+     * Constructor
+     * @param reason why did the conversion fail?
+     */
+    ConversionException(String reason) {
+        super(reason);
+    }
 }
