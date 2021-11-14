@@ -24,6 +24,7 @@ import java.awt.Stroke;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.bsd.x2svg.draw.TypeModel;
 import org.apache.batik.svggen.SVGGraphics2D;
 
 import de.bsd.x2svg.draw.AbstractElement;
@@ -261,6 +262,10 @@ public class Container {
                 cm = new SubstitutionModel();
                 cm.draw(svg, x7, yHalf - 7);
                 break;
+			case TYPE_ON_RIGHT:
+				cm = new TypeModel();
+				cm.draw(svg, x7, yHalf-7);
+				break;
             default:
                 System.err.println("unknown case for ContentModel ... : " + content);
         }

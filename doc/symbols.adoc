@@ -10,9 +10,9 @@ Future versions of x2svg will also show attributes of the elements.
 == Content model
 
 image:img/choice.png[Choice symbol]::
-Elements enclosed can be used alternatively. You have the *choice*.
+Elements enclosed can be used alternatively. You have the *choice*. For JsonSchema, this corresponds to _anyOf_.
 image:img/sequence.png[Sequence symbol]::
-Elements enclosed need to be issued in the order given here. They need to come in a *sequence*.
+Elements enclosed need to be issued in the order given here. They need to come in a *sequence*. For JsonSchema, this corresponds to _allOf_.
 image:img/InheritanceModel.png[Inheritance mode]::
 This symbol specifies that the elements on the right side inherit from those on the left.
 It is mostly used within XML Schema.

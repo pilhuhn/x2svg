@@ -14,21 +14,53 @@
     <version>1.2</version>
 
     <build>
+        <finalName>x2svg</finalName>
         <plugins>
+
+            <!-- other Maven plugins ... -->
+
             <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>${maven-assembly-plugin.version}</version>
 
-                    <configuration>
-                      <archive>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
                         <manifest>
-                          <addClasspath>true</addClasspath>
-                          <mainClass>de.bsd.x2svg.X2Svg</mainClass>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>de.bsd.x2svg.X2Svg</mainClass>
                         </manifest>
-                      </archive>
-                    </configuration>
+                    </archive>
+                </configuration>
 
-                  </plugin>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>de.bsd.x2svg.X2Svg</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+
+            </plugin>
         </plugins>
     </build>
+
 </project>

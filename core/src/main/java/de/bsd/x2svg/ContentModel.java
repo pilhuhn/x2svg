@@ -46,5 +46,9 @@ public enum ContentModel {
     /**
      * The children are substituted by the stuff on the right
      */
-    SUBSTITUTION
+    SUBSTITUTION,
+	/**
+     * Right side is the type of the left
+     */
+	TYPE_ON_RIGHT
 }

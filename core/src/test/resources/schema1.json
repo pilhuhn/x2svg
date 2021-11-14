@@ -1,0 +1,31 @@
+{
+  "type": "object",
+  "properties": {
+    "nested": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "minItems": 0,
+      "maxItems": 5,
+      "uniqueItems": true
+    },
+    "other": {
+      "type" : "string",
+      "description": "Just a little la la"
+    },
+    "more" : {
+      "type" : "number"
+    },
+    "prefixArray": {
+      "type" : "array",
+      "prefixItems": [
+        { "type": "string" },
+        { "type": "string" },
+        { "type": "number" },
+        { "enum": ["NW", "NE", "SW", "SE"] }
+      ],
+      "items": false
+    }
+  }
+}
