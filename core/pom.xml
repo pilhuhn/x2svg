@@ -28,6 +28,12 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>de.bsd.x2svg.X2Svg</mainClass>
+                        </manifest>
+                    </archive>
                 </configuration>
 
                 <executions>
@@ -41,19 +47,20 @@
                 </executions>
             </plugin>
             <plugin>
-                          <groupId>org.apache.maven.plugins</groupId>
-                          <artifactId>maven-jar-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
 
-                          <configuration>
-                            <archive>
-                              <manifest>
-                                <addClasspath>true</addClasspath>
-                                <mainClass>de.bsd.x2svg.X2Svg</mainClass>
-                              </manifest>
-                            </archive>
-                          </configuration>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>de.bsd.x2svg.X2Svg</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
 
-                        </plugin>
-              </plugins>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
