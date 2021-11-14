@@ -10,9 +10,10 @@ import org.apache.commons.logging.LogFactory;
 
 import java.io.File;
 import java.util.Iterator;
+import java.util.Set;
 
 /**
- *
+ * Parser for JsonSchema documents
  */
 public class JsonSchemaParser implements InputParser {
 
@@ -25,6 +26,8 @@ public class JsonSchemaParser implements InputParser {
     private final Log log = LogFactory.getLog(JsonSchemaParser.class);
 
     JsonNode jsonRootNode;
+
+    Set<String> primitiveTypes = Set.of("string","number","integer");
 
     @Override
     public Container parseInput() throws Exception {
@@ -120,10 +123,13 @@ public class JsonSchemaParser implements InputParser {
                         dType.parent=type;
                         dType.isType=true;
                         type.children.add(dType);
-                        type.content = ContentModel.TYPE_ON_RIGHT; // TODO better one ?
+                        type.content = ContentModel.TYPE_ON_RIGHT;
+                        if (primitiveTypes.contains(dataTypeString)) {
+                            type.isPcData = true; // content is
+                        }
 
                     }
-                } else { // elements embedded dataType is null.. Check if it is a ref and use this
+                } else { // elements embedded dataType is null... Check if it is a ref and use this
                     JsonNode refNode = element.get("$ref");
                     if (refNode != null) {
                         getContainerViaRef(refNode, type );
