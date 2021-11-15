@@ -32,8 +32,7 @@ public class JsonSchemaParser implements InputParser {
     @Override
     public Container parseInput() throws Exception {
 
-        System.err.println("Input " + schemaFile.getAbsolutePath());
-        System.err.flush();
+        log.info("Input " + schemaFile.getAbsolutePath());
         jsonRootNode = JsonLoader.fromFile(schemaFile);
 
         Container rootContainer = new Container();
@@ -44,7 +43,7 @@ public class JsonSchemaParser implements InputParser {
             return rootContainer;
         }
 
-        Container container = getContainer(jsonRootNode, rootContainer, "properties");
+        getContainer(jsonRootNode, rootContainer, "properties");
         return rootContainer;
     }
 
@@ -59,7 +58,7 @@ public class JsonSchemaParser implements InputParser {
                 parentContainer.children.add(type);
                 type.parent = parentContainer;
                 type.name = fieldName;
-                System.out.println("Name " + fieldName + " type " + element.getNodeType().name());
+//                System.out.println("Name " + fieldName + " type " + element.getNodeType().name());
 
                 if (element.isArray()) {
                     type.cardinality = new Cardinality("0", "*"); // TODO that is of the inner elements?
@@ -67,7 +66,6 @@ public class JsonSchemaParser implements InputParser {
                 JsonNode dataType = element.get("type");
                 if (dataType!=null) {
                     String dataTypeString = dataType.asText();
-                    System.out.println("   " + dataTypeString);
                     if (dataTypeString.equals("array")) {
                         // complex type, we can recurse
                         int min = 0, max = Integer.MAX_VALUE;
@@ -113,10 +111,8 @@ public class JsonSchemaParser implements InputParser {
 
                         }
                     } else if (dataTypeString.equals("object")) {
-                        System.err.println("  object not handled " + fieldName);
-                        System.err.flush();
+                        getContainer(element,type,"properties");
                     } else {
-                        System.out.println(dataTypeString);
                         Container dType = new Container();
                         String extras = getExtras(element);
                         dType.name = "<" + dataTypeString + extras +  ">";
@@ -125,7 +121,7 @@ public class JsonSchemaParser implements InputParser {
                         type.children.add(dType);
                         type.content = ContentModel.TYPE_ON_RIGHT;
                         if (primitiveTypes.contains(dataTypeString)) {
-                            type.isPcData = true; // content is
+                            type.isPcData = true; // content is literal data
                         }
 
                     }
@@ -175,12 +171,17 @@ public class JsonSchemaParser implements InputParser {
         String reference = ref.asText();
         // Now look this up via json pointer
         if (reference.startsWith("#")) {
-            reference = reference.substring(1); // TODO always valid?
+            // Local reference within the document
+            reference = reference.substring(1);
         }
-        String refShortName = reference.substring(reference.lastIndexOf(".")+1);
+        String refShortName;
+        if (reference.contains(".")) {
+            refShortName = reference.substring(reference.lastIndexOf(".") + 1);
+        }
+        else {
+            refShortName = reference.substring(reference.lastIndexOf("/") +1);
+        }
         JsonNode deref = jsonRootNode.at(reference);
-
-        System.out.println(deref.toPrettyString());
 
         Container refNameContainer = new Container();
         refNameContainer.name = refShortName;
