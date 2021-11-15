@@ -18,6 +18,7 @@
         <testng.version>7.4.0</testng.version>
         <json-schema-validator.version>2.2.14</json-schema-validator.version>
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
+        <batik.version>1.14</batik.version>
     </properties>
 
 
@@ -30,6 +31,12 @@
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>fop</artifactId>
             <version>${fop.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <!-- TODO shrink this to the needed subset -->
+            <artifactId>batik-all</artifactId>
+            <version>${batik.version}</version>
         </dependency>
         <dependency>
             <groupId>com.wutka</groupId>
