@@ -28,3 +28,6 @@ would produce this output:
 
 image:doc/img/sample.png[Sample output of the DTD]
 
+== More
+
+Check out the link:doc/README.adoc[Documentation] for more details about building and running X2svg.
