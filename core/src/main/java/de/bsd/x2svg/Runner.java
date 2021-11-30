@@ -78,7 +78,10 @@ public class Runner {
         }
 
         ip.setInputFile(new File(params.getInputFileName()));
-        ip.setParserOptions(params.getParserSpecificOptions());
+        String[] parserSpecificOptions = params.getParserSpecificOptions();
+        if (parserSpecificOptions != null && parserSpecificOptions.length>0) {
+            ip.setParserOptions(parserSpecificOptions);
+        }
         if (debug)
             ip.setDebug();
         // set with attr and with comment if appropriate
