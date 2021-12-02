@@ -1,7 +1,10 @@
 /**
  *
  */
-package de.bsd.x2svg.outputConverter;
+package de.bsd.x2svg.output_converter;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * This class represents an output file plus its type.
@@ -14,6 +17,8 @@ public class OutputFormat {
     private String directory;
     private OutputType type;
     private boolean noFile = false;
+
+    private final Log log = LogFactory.getLog(OutputFormat.class);
 
     /**
      * Construct the output format and tries to guess the
@@ -30,7 +35,7 @@ public class OutputFormat {
             }
         }
         if (type == null)
-            System.err.println("Unknown output type. File will be ignored");
+            log.error("Unknown output type. File will be ignored");
     }
 
 

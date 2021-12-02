@@ -4,7 +4,7 @@ import java.util.Locale;
 
 import org.apache.tools.ant.types.DataType;
 
-import de.bsd.x2svg.outputConverter.OutputType;
+import de.bsd.x2svg.output_converter.OutputType;
 
 /**
  * An ant data type to wrapper an X2Svg <code>OutputType</code> object.

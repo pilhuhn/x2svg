@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import de.bsd.x2svg.RuntimeParameters;
-import de.bsd.x2svg.outputConverter.OutputType;
+import de.bsd.x2svg.output_converter.OutputType;
 
 
 /**
@@ -62,7 +62,7 @@ public abstract class X2SvgSubTask extends X2SvgBaseTask {
      * @param types The set of output types to convert output to.
      */
     public void setOutputTypes(final Set<OutputType> types) {
-        this.types = new HashSet<OutputType>(types);
+        this.types = new HashSet<>(types);
     }
 
 

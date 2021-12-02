@@ -20,9 +20,11 @@ package de.bsd.x2svg;
 
 import java.util.Arrays;
 
-import de.bsd.x2svg.outputConverter.OutputFormat;
-import de.bsd.x2svg.outputConverter.OutputType;
+import de.bsd.x2svg.output_converter.OutputFormat;
+import de.bsd.x2svg.output_converter.OutputType;
 import de.bsd.x2svg.util.SantasLittleHelper;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 
 /**
@@ -32,6 +34,7 @@ import de.bsd.x2svg.util.SantasLittleHelper;
  */
 public class X2Svg {
 
+    private final Log log = LogFactory.getLog(X2Svg.class);
     /**
      * Main - to be called to start the show
      *
@@ -39,12 +42,13 @@ public class X2Svg {
      * @throws Exception if anything goes wrong
      */
     public static void main(String[] args) throws Exception {
+        X2Svg x2svg = new X2Svg();
+
         if (args.length == 0) { // no args? Bail out early
-            usage();
+            x2svg.usage();
             return;
         }
 
-        X2Svg x2svg = new X2Svg();
         RuntimeParameters params = x2svg.parseCommandline(args);
         if (params != null) {
             Runner d = new Runner();
@@ -101,7 +105,7 @@ public class X2Svg {
                     return null;
                 case 'p':
                     parserLoader.load();
-                    System.out.println(parserLoader.getHelpForMode(arg));
+                    log.info(parserLoader.getHelpForMode(arg));
                     return null;
                 case 'o':
                     p.setSvgOutputFile(arg);
@@ -117,11 +121,11 @@ public class X2Svg {
                     break;
                 case 'l':
                     parserLoader.load();
-                    System.out.println(Messages.getString("X2Svg.0")); //$NON-NLS-1$
-                    System.out.println(parserLoader.listParsers());
+                    log.info(Messages.getString("X2Svg.0")); //$NON-NLS-1$
+                    log.info(parserLoader.listParsers());
                     return null;
                 default:
-                    System.out.println(Messages.getString("X2Svg.1") + opt); //$NON-NLS-1$
+                    log.info(Messages.getString("X2Svg.1") + opt); //$NON-NLS-1$
                     usage();
                     return null;
             }
@@ -137,10 +141,7 @@ public class X2Svg {
         }
 
         // set name of svg output file
-        if (p.getSvgOutputFile() == null) {
-            String tmp = p.getInputFileName();
-            p.setSvgOutputFile(SantasLittleHelper.attachSuffixToFileName(tmp, "svg")); //$NON-NLS-1$
-        }
+        setSvgOutputFileName(p);
         pos++;
 
         // pull in parser specific options
@@ -153,6 +154,11 @@ public class X2Svg {
 
         // look at the output conversions if they only specified a type, but
         // no file name and fill that in
+        setConversionFileNames(p);
+        return p;
+    }
+
+    private void setConversionFileNames(RuntimeParameters p) {
         for (OutputFormat format : p.getOutputFormats()) {
             if (format.getFileName() == null) {
                 String type = format.getType().toString().toLowerCase();
@@ -162,7 +168,13 @@ public class X2Svg {
                 format.updateFileName(name);
             }
         }
-        return p;
+    }
+
+    private void setSvgOutputFileName(RuntimeParameters p) {
+        if (p.getSvgOutputFile() == null) {
+            String tmp = p.getInputFileName();
+            p.setSvgOutputFile(SantasLittleHelper.attachSuffixToFileName(tmp, "svg")); //$NON-NLS-1$
+        }
     }
 
     /**
@@ -203,21 +215,20 @@ public class X2Svg {
     }
 
     /**
-     * Display usage of the program and exit afterwards.
+     * Display usage of the program.
      */
-    private static void usage() {
-        System.out.println(Messages.getString("X2Svg.2")); //$NON-NLS-1$
-        System.out.println(Messages.getString("X2Svg.3")); //$NON-NLS-1$
-        System.out.println(Messages.getString("X2Svg.4")); //$NON-NLS-1$
-        System.out.println(Messages.getString("X2Svg.5")); //$NON-NLS-1$
-        System.out.println(Messages.getString("X2Svg.6")); //$NON-NLS-1$
-        System.out.println(Messages.getString("X2Svg.7")); //$NON-NLS-1$
-        System.out.println(Messages.getString("X2Svg.8")); //$NON-NLS-1$
-        System.out.println(Messages.getString("X2Svg.13")); //$NON-NLS-1$
-        System.out.println(Messages.getString("X2Svg.14")); //$NON-NLS-1$
-        System.out.println(Messages.getString("X2Svg.15")); //$NON-NLS-1$
-        System.out.println(Messages.getString("X2Svg.16")); //$NON-NLS-1$
-        System.out.println(Messages.getString("X2Svg.9")); //$NON-NLS-1$
-
+    private void usage() {
+        log.info(Messages.getString("X2Svg.2")); //$NON-NLS-1$
+        log.info(Messages.getString("X2Svg.3")); //$NON-NLS-1$
+        log.info(Messages.getString("X2Svg.4")); //$NON-NLS-1$
+        log.info(Messages.getString("X2Svg.5")); //$NON-NLS-1$
+        log.info(Messages.getString("X2Svg.6")); //$NON-NLS-1$
+        log.info(Messages.getString("X2Svg.7")); //$NON-NLS-1$
+        log.info(Messages.getString("X2Svg.8")); //$NON-NLS-1$
+        log.info(Messages.getString("X2Svg.13")); //$NON-NLS-1$
+        log.info(Messages.getString("X2Svg.14")); //$NON-NLS-1$
+        log.info(Messages.getString("X2Svg.15")); //$NON-NLS-1$
+        log.info(Messages.getString("X2Svg.16")); //$NON-NLS-1$
+        log.info(Messages.getString("X2Svg.9")); //$NON-NLS-1$
     }
 }

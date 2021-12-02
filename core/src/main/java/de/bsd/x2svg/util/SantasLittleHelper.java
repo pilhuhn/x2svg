@@ -10,6 +10,9 @@ package de.bsd.x2svg.util;
  */
 public class SantasLittleHelper {
 
+    private SantasLittleHelper() {
+    }
+
     /**
      * Return a file name with appended or changed suffix.
      * @param fileName the original file name

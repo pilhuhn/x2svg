@@ -1,4 +1,4 @@
-package de.bsd.x2svg.outputConverter;
+package de.bsd.x2svg.output_converter;
 
 import java.util.Locale;
 

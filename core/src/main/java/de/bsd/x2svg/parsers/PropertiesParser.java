@@ -29,7 +29,6 @@ import de.bsd.x2svg.Cardinality;
 import de.bsd.x2svg.Container;
 import de.bsd.x2svg.ContentModel;
 import de.bsd.x2svg.Messages;
-import de.bsd.x2svg.util.IOUtil;
 
 /**
  * Simple example of a InputParser for Property files.
@@ -87,18 +86,13 @@ public class PropertiesParser implements InputParser {
      * @throws ParserProblemException if the input file is not acessible
      */
     private void loadPropertiesFile() throws ParserProblemException {
-        FileInputStream fis = null;
-        try {
-            fis = new FileInputStream(pFile);
-
+        try (FileInputStream fis = new FileInputStream(pFile) ){
             // File is there, load the properties from it
             properties.load(fis);
         } catch (FileNotFoundException fne) {
             throw new ParserProblemException(pFile.getName() + " in " + pFile.getAbsolutePath() + Messages.getString("PropertiesParser.4")); //$NON-NLS-1$ //$NON-NLS-2$
         } catch (IOException ioe) {
             throw new ParserProblemException(Messages.getString("PropertiesParser.5") + pFile.getName() + ": IOException"); //$NON-NLS-1$ //$NON-NLS-2$
-        } finally {
-            IOUtil.close(fis);
         }
     }
 

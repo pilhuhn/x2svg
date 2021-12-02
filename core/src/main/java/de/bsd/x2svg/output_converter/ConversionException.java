@@ -1,7 +1,7 @@
 /**
  *
  */
-package de.bsd.x2svg.outputConverter;
+package de.bsd.x2svg.output_converter;
 
 /**
  * This exception is thrown if the conversion to the

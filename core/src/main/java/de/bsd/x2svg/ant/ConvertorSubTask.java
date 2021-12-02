@@ -2,14 +2,15 @@ package de.bsd.x2svg.ant;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.types.FileSet;
 
-import de.bsd.x2svg.outputConverter.ConversionException;
-import de.bsd.x2svg.outputConverter.OutputType;
-import de.bsd.x2svg.outputConverter.SvgConverter;
+import de.bsd.x2svg.output_converter.ConversionException;
+import de.bsd.x2svg.output_converter.OutputType;
+import de.bsd.x2svg.output_converter.SvgConverter;
 import de.bsd.x2svg.util.SantasLittleHelper;
 
 /**
@@ -30,7 +31,7 @@ public class ConvertorSubTask extends X2SvgSubTask {
     /**
      * Create a hold for FileSet objects that need to be processed.
      */
-    private final ArrayList<FileSet> fileSets = new ArrayList<FileSet>();
+    private final List<FileSet> fileSets = new ArrayList<>();
 
 
     /**
@@ -48,6 +49,7 @@ public class ConvertorSubTask extends X2SvgSubTask {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute() throws BuildException {
         // Create an instance of the SVG convertor object.
         SvgConverter converter = new SvgConverter();

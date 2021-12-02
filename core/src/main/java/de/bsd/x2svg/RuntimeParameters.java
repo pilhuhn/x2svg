@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import de.bsd.x2svg.outputConverter.OutputFormat;
+import de.bsd.x2svg.output_converter.OutputFormat;
 import de.bsd.x2svg.parsers.InputParser;
 
 /**
@@ -58,7 +58,7 @@ public class RuntimeParameters {
     /**
      * List of formats into which the generated SVG will be converted
      */
-    private final List<OutputFormat> outputs = new ArrayList<OutputFormat>();
+    private final List<OutputFormat> outputs = new ArrayList<>();
     /**
      * A comment to be printed on the generated SVG
      */

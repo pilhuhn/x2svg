@@ -20,6 +20,7 @@ public class JsonSchemaParser implements InputParser {
 
     private static final String MODE_STRING = "json"; //$NON-NLS-1$
    	private static final String FILE_SUFFIX_STRING = ".json"; //$NON-NLS-1$
+    public static final String PROPERTIES = "properties";
 
     private File schemaFile = null;
     private boolean debug = false;
@@ -48,7 +49,7 @@ public class JsonSchemaParser implements InputParser {
             return rootContainer;
         }
 
-        getContainer(jsonRootNode, rootContainer, "properties");
+        getContainer(jsonRootNode, rootContainer, PROPERTIES);
         if (keepRoot) {
             return rootContainer;
         }
@@ -81,7 +82,8 @@ public class JsonSchemaParser implements InputParser {
                     String dataTypeString = dataType.asText();
                     if (dataTypeString.equals("array")) {
                         // complex type, we can recurse
-                        int min = 0, max = Integer.MAX_VALUE;
+                        int min = 0;
+                        int max = Integer.MAX_VALUE;
                         JsonNode minItems = element.get("minItems");
                         if (minItems != null) {
                             min = minItems.asInt();
@@ -124,7 +126,7 @@ public class JsonSchemaParser implements InputParser {
 
                         }
                     } else if (dataTypeString.equals("object")) {
-                        getContainer(element,type,"properties");
+                        getContainer(element,type, PROPERTIES);
                     } else {
                         Container dType = new Container();
                         String extras = getExtras(element);
@@ -165,7 +167,7 @@ public class JsonSchemaParser implements InputParser {
         else if (contains(root.fieldNames(), "type")) {
             if (ref==null) {
                 System.err.println("Ref is null ");
-                getContainer(root, parentContainer, "properties");
+                getContainer(root, parentContainer, PROPERTIES);
             } else {
                 System.out.println("Not yet handled ref " + ref.asText());
             }
@@ -237,7 +239,7 @@ public class JsonSchemaParser implements InputParser {
         parent.children.add(refNameContainer);
         refNameContainer.content = ContentModel.SEQUENCE;
 
-        getContainer(deref, refNameContainer, "properties");
+        getContainer(deref, refNameContainer, PROPERTIES);
         return parent;
     }
 
@@ -332,10 +334,6 @@ public class JsonSchemaParser implements InputParser {
     public void setDebug() {
         debug = true;
     }
-
-    private boolean isDebug() {
-    		return debug && log.isDebugEnabled();
-    	}
 
     @Override
     public void setWithAttributes(boolean value) {

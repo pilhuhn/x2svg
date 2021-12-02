@@ -1,7 +1,7 @@
 /**
  *
  */
-package de.bsd.x2svg.outputConverter;
+package de.bsd.x2svg.output_converter;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,7 +16,6 @@ import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 
 import de.bsd.x2svg.Messages;
-import de.bsd.x2svg.util.IOUtil;
 import de.bsd.x2svg.util.SantasLittleHelper;
 
 /**
@@ -38,12 +37,10 @@ public class SvgConverter {
      * @throws ConversionException if anything in the conversion process goes wrong
      */
     public void convert(OutputType type, File input, File output) throws ConversionException {
-        InputStream inputStream = null;
-        OutputStream outputStream = null;
-        try {
+        try (InputStream inputStream = new FileInputStream(input);
+             OutputStream outputStream = new FileOutputStream(output);)
+        {
             final SVGAbstractTranscoder tc = SVGTranscoderFactory.getTranscoderForOutputType(type);
-            inputStream = new FileInputStream(input);
-            outputStream = new FileOutputStream(output);
             final TranscoderInput ti = new TranscoderInput(inputStream);
             final TranscoderOutput to = new TranscoderOutput(outputStream);
             tc.transcode(ti, to);
@@ -51,9 +48,6 @@ public class SvgConverter {
             throw new ConversionException(e.getLocalizedMessage());
         } catch (IOException e) {
             throw new ConversionException(e.getLocalizedMessage());
-        } finally {
-            IOUtil.close(inputStream);
-            IOUtil.close(outputStream);
         }
     }
 

@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.apache.tools.ant.types.DataType;
 
-import de.bsd.x2svg.outputConverter.OutputType;
+import de.bsd.x2svg.output_converter.OutputType;
 
 /**
  * The output type, that acts as a wrapper for a collection of output formats.
@@ -19,7 +19,7 @@ public class Output extends DataType {
     /**
      * The collection of formats to output.
      */
-    private final Set<OutputType> types = new HashSet<OutputType>();
+    private final Set<OutputType> types = new HashSet<>();
 
 
     /**

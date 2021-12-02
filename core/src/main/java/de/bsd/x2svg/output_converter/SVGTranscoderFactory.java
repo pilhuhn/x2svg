@@ -1,11 +1,12 @@
 /**
  *
  */
-package de.bsd.x2svg.outputConverter;
+package de.bsd.x2svg.output_converter;
 
 import java.awt.Color;
 
 import org.apache.batik.transcoder.SVGAbstractTranscoder;
+import org.apache.batik.transcoder.image.ImageTranscoder;
 import org.apache.batik.transcoder.image.JPEGTranscoder;
 import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.apache.batik.transcoder.image.TIFFTranscoder;
@@ -40,7 +41,7 @@ public class SVGTranscoderFactory {
         switch (type) {
             case PNG:
                 tc = new PNGTranscoder();
-                tc.addTranscodingHint(PNGTranscoder.KEY_BACKGROUND_COLOR, Color.WHITE);
+                tc.addTranscodingHint(ImageTranscoder.KEY_BACKGROUND_COLOR, Color.WHITE);
                 break;
             case PDF:
                 tc = new PDFTranscoder();

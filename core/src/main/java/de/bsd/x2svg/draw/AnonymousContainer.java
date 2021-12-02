@@ -26,6 +26,8 @@ import de.bsd.x2svg.Cardinality;
 import de.bsd.x2svg.Constants;
 import de.bsd.x2svg.RuntimeProperties;
 import de.bsd.x2svg.ContentModel;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Draw a box of an anonymous element container
@@ -42,6 +44,7 @@ import de.bsd.x2svg.ContentModel;
 public class AnonymousContainer extends ElementBox {
 
     private final ContentModel content;
+    private final Log log = LogFactory.getLog(AnonymousContainer.class);
 
     /**
      * Constructor to use
@@ -90,7 +93,7 @@ public class AnonymousContainer extends ElementBox {
 				tm.draw(svg, x7, yHalf-7);
 				break;
 			default:
-				System.out.println("unknown case for container content model..." + content.name());
+				log.warn("unknown case for container content model..." + content.name());
         }
 
         // line to right neighbor

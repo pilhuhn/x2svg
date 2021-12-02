@@ -21,6 +21,7 @@ package de.bsd.x2svg;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -50,11 +51,13 @@ import de.bsd.x2svg.parsers.InputParser;
  */
 public class ParserLoader {
     private static final String PACKAGE_STRING = "de/bsd/x2svg/parsers"; //$NON-NLS-1$
+    public static final String PARSER_LOADER_2 = "ParserLoader.2";
+    public static final String DOT_CLASS = ".class";
     private static volatile ParserLoader theLoader = null;
-    private final Map<String, Class<InputParser>> parserByMode = new HashMap<String, Class<InputParser>>();
-    private final Map<String, Class<InputParser>> parserBySuffix = new HashMap<String, Class<InputParser>>();
-    private final Map<String, String> helpByMode = new HashMap<String, String>();
-    private final Map<String, String> modeAndSuffix = new HashMap<String, String>();
+    private final Map<String, Class<InputParser>> parserByMode = new HashMap<>();
+    private final Map<String, Class<InputParser>> parserBySuffix = new HashMap<>();
+    private final Map<String, String> helpByMode = new HashMap<>();
+    private final Map<String, String> modeAndSuffix = new HashMap<>();
 
     private static boolean debug = false;
     private static final String NO_SPECIFIC_HELP_AVAILABLE = " - no specific help available -";
@@ -88,16 +91,16 @@ public class ParserLoader {
      * @throws InstantiationException If the parser class can not be instantiated
      * @throws IllegalStateException  If {@link #load()} has not yet been called
      */
-    public InputParser getParserByMode(String mode) throws NoParserException, IllegalAccessException, InstantiationException {
+    public InputParser getParserByMode(String mode) throws NoParserException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
         if (!loaded)
             throw new IllegalStateException(Messages.getString("ParserLoader.1")); //$NON-NLS-1$
         if (mode == null || mode.equals("")) //$NON-NLS-1$
-            throw new NoParserException(Messages.getString("ParserLoader.2") + mode); //$NON-NLS-1$
+            throw new NoParserException(Messages.getString(PARSER_LOADER_2) + mode); //$NON-NLS-1$
 
         Class<InputParser> parser = parserByMode.get(mode);
         if (parser == null)
             throw new NoParserException(Messages.getString("ParserLoader.3") + mode + Messages.getString("ParserLoader.4")); //$NON-NLS-1$ //$NON-NLS-2$
-        return parser.newInstance();
+        return parser.getDeclaredConstructor().newInstance();
     }
 
     /**
@@ -112,9 +115,9 @@ public class ParserLoader {
      * @throws IllegalStateException  If {@link #load()} has not yet been called
      * @see java.lang.String#endsWith(String)
      */
-    public InputParser getParserForFilename(String filename) throws NoParserException, InstantiationException, IllegalAccessException {
+    public InputParser getParserForFilename(String filename) throws NoParserException, InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         if (!loaded)
-            throw new IllegalStateException(Messages.getString("ParserLoader.2")); //$NON-NLS-1$
+            throw new IllegalStateException(Messages.getString(PARSER_LOADER_2)); //$NON-NLS-1$
 
         if (filename == null || filename.equals("")) //$NON-NLS-1$
             throw new NoParserException(Messages.getString("ParserLoader.6") + filename); //$NON-NLS-1$
@@ -123,7 +126,7 @@ public class ParserLoader {
         for (String suffix : suffixes) {
             if (filename.endsWith(suffix)) {
                 Class<InputParser> parser = parserBySuffix.get(suffix);
-                return parser.newInstance();
+                return parser.getDeclaredConstructor().newInstance();
             }
         }
         throw new NoParserException(Messages.getString("ParserLoader.7") + filename); //$NON-NLS-1$
@@ -145,7 +148,7 @@ public class ParserLoader {
             // Get the absolute class name (formatted as a path).
             String classname = "/" + InputParser.class.getName();
             classname = classname.replace('.', '/');
-            classname = classname + ".class";
+            classname = classname + DOT_CLASS;
 
             // Get the filename of a known class in the package we want.
             final URL url = InputParser.class.getResource(classname);
@@ -173,25 +176,23 @@ public class ParserLoader {
                 }
             } else {
                 // Classes are in a jar.
-                JarFile jf = new JarFile(classbase); //$NON-NLS-1$
-                Enumeration<JarEntry> entries = jf.entries();
+                try (JarFile jf = new JarFile(classbase)) { //$NON-NLS-1$
+                    Enumeration<JarEntry> entries = jf.entries();
 
-                while (entries.hasMoreElements()) {
-                    JarEntry entry = entries.nextElement();
-                    String name = entry.getName();
+                    while (entries.hasMoreElements()) {
+                        JarEntry entry = entries.nextElement();
+                        String name = entry.getName();
 
-                    if (name.startsWith(PACKAGE_STRING) && name.endsWith(".class")) //$NON-NLS-1$
-                    {
-                        checkClassIsParser(name);
+                        if (name.startsWith(PACKAGE_STRING) && name.endsWith(DOT_CLASS)) //$NON-NLS-1$
+                        {
+                            checkClassIsParser(name);
+                        }
                     }
                 }
             }
             loaded = true;
 
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -211,7 +212,7 @@ public class ParserLoader {
             System.out.println(Messages.getString("ParserLoader.10") + classname + Messages.getString("ParserLoader.11")); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        String foundclassname = classname.substring(0, classname.lastIndexOf(".class")); //$NON-NLS-1$
+        String foundclassname = classname.substring(0, classname.lastIndexOf(DOT_CLASS)); //$NON-NLS-1$
         foundclassname = foundclassname.replace('/', '.'); // create fully qualified name
         Class clazz = Class.forName(foundclassname);
         Class[] interfaces = clazz.getInterfaces();
@@ -236,7 +237,7 @@ public class ParserLoader {
      */
     private void addToParserList(Class<InputParser> clazz) {
         try {
-            InputParser ip = clazz.newInstance();
+            InputParser ip = clazz.getDeclaredConstructor().newInstance();
             parserByMode.put(ip.getMode(), clazz);
             parserBySuffix.put(ip.getFileSuffix(), clazz);
 
@@ -245,9 +246,7 @@ public class ParserLoader {
                 helpString = NO_SPECIFIC_HELP_AVAILABLE;
             helpByMode.put(ip.getMode(), helpString);
             modeAndSuffix.put(ip.getMode(), ip.getFileSuffix());
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
             e.printStackTrace();
         }
 
@@ -261,11 +260,11 @@ public class ParserLoader {
      */
     public String listParsers() {
         if (!loaded)
-            throw new IllegalStateException(Messages.getString("ParserLoader.2")); //$NON-NLS-1$
+            throw new IllegalStateException(Messages.getString(PARSER_LOADER_2)); //$NON-NLS-1$
 
-        StringBuffer result = new StringBuffer();
-        for (String mode : modeAndSuffix.keySet()) {
-            result.append(mode).append(": ").append(modeAndSuffix.get(mode));
+        StringBuilder result = new StringBuilder();
+        for (Map.Entry<String,String> entry : modeAndSuffix.entrySet()) {
+            result.append(entry.getKey()).append(": ").append(entry.getValue());
             result.append("\n");
         }
         return result.toString();
@@ -281,15 +280,15 @@ public class ParserLoader {
      */
     public String getHelpForMode(String mode) {
         if (!loaded)
-            throw new IllegalStateException(Messages.getString("ParserLoader.2")); //$NON-NLS-1$
+            throw new IllegalStateException(Messages.getString(PARSER_LOADER_2)); //$NON-NLS-1$
 
         if (helpByMode.containsKey(mode))
             return helpByMode.get(mode);
         else if ("*".equals(mode)) {
-            StringBuffer buf = new StringBuffer();
-            for (String key : helpByMode.keySet()) {
-                buf.append(key).append(":\n");
-                buf.append(helpByMode.get(key));
+            StringBuilder buf = new StringBuilder();
+            for (Map.Entry<String,String> entry : helpByMode.entrySet()) {
+                buf.append(entry.getKey()).append(":\n");
+                buf.append(entry.getValue());
                 buf.append("\n\n");
             }
             return buf.toString();
@@ -302,7 +301,7 @@ public class ParserLoader {
      */
     private static class ClassNameFileFilter implements FilenameFilter {
         public boolean accept(final File dir, final String name) {
-            return name.endsWith(".class");
+            return name.endsWith(DOT_CLASS);
         }
     }
 

@@ -23,12 +23,10 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import de.bsd.x2svg.util.IOUtil;
 
 /**
  * This singleton provides properties that are needed at runtime.
@@ -39,6 +37,8 @@ public class RuntimeProperties {
 
     private static final String ERR_STRING = Messages.getString("Runner.1")
             + Constants.SYSTEM_PROPERTIES_FILE + Messages.getString("Runner.2");
+    public static final String BLACK = "0x000000";
+    public static final String FALSE = "false";
     private static volatile RuntimeProperties properties;
     private Font fontSmall;
     private FontMetrics fontMetrics;
@@ -291,45 +291,33 @@ public class RuntimeProperties {
      */
     public void loadProperties(final String propertiesLocation, boolean debug) {
         final Properties p = new Properties();
-        InputStream is = null;
-        try {
-            if (propertiesLocation != null) {
-                // If a location is specified for properties, use it ...
-                is = new FileInputStream(new File(propertiesLocation));
-                if (debug) {
-                    System.out.println("Using properties file from - " + new File(propertiesLocation).getAbsolutePath());
-                }
-            } else {
-                // try to load it from the base dir
-                try {
-                    is = new FileInputStream(new File("x2svg.properties"));
-                } catch (FileNotFoundException fnfe) {
-                    // 	... Otherwise, try to load the properties from the classpath.
-                    is = ClassLoader.getSystemResourceAsStream(Constants.SYSTEM_PROPERTIES_FILE);
-                }
-            }
+        String fileName = propertiesLocation != null ? propertiesLocation : "x2svg.properties";
 
-            if (is != null) {
-                // If there is a stream, load properties.
+        File propertiesFile = new File(fileName);
+        if (propertiesFile.canRead()) {
+            try (InputStream is = new FileInputStream(propertiesFile)) {
                 p.load(is);
-            } else {
+            } catch (IOException ioe) {
                 // Unable to locate properties file.
                 System.err.println(ERR_STRING);
             }
-        } catch (FileNotFoundException fnfe) {
-            // If there is a problem loading the properties from the specified location, tell people.
-            System.out.println(ERR_STRING);
-        } catch (IOException e) {
-            // If there is a problem loading the properties, tell people.
-            System.out.println(ERR_STRING);
-        } finally {
-            IOUtil.close(is);
+        } else {
+
+            InputStream is = ClassLoader.getSystemResourceAsStream(Constants.SYSTEM_PROPERTIES_FILE);
+            try {
+                p.load(is);
+            } catch (IOException ioe) {
+                if (debug) {
+                    System.err.println("Can't read default properties");
+                }
+            }
         }
+
 
         RuntimeProperties props = RuntimeProperties.getInstance();
         props.setFontName(p.getProperty("x2svg.font.element", Constants.DEFAULT_FONT_ELEMENTS)); //$NON-NLS-1$
         props.setFontSmallName(p.getProperty("x2svg.font.cardinality", Constants.DEFAULT_FONT_SMALL)); //$NON-NLS-1$
-        String tColor = p.getProperty("x2svg.color.text", "0x000000"); //$NON-NLS-1$ //$NON-NLS-2$
+        String tColor = p.getProperty("x2svg.color.text", BLACK); //$NON-NLS-1$ //$NON-NLS-2$
         try {
             props.setTextColor(Color.decode(tColor));
         } catch (NumberFormatException nfe) {
@@ -338,7 +326,7 @@ public class RuntimeProperties {
         }
         props.setCommentText(p.getProperty("x2svg.comment.defaultText", null)); // $NON-NLS-1$
         try {
-            String color = p.getProperty("x2svg.comment.color", "0x000000"); // $NON-NLS-1$ $NON-NLS-2$
+            String color = p.getProperty("x2svg.comment.color", BLACK); // $NON-NLS-1$ $NON-NLS-2$
             Color col = Color.decode(color);
             props.setCommentTextColor(col);
         } catch (NumberFormatException nfe) {
@@ -346,7 +334,7 @@ public class RuntimeProperties {
             props.setCommentTextColor(Color.BLACK);
         }
         try {
-            String color = p.getProperty("x2svg.attribute.color", "0x000000"); // $NON-NLS-1$ $NON-NLS-2$
+            String color = p.getProperty("x2svg.attribute.color", BLACK); // $NON-NLS-1$ $NON-NLS-2$
             Color col = Color.decode(color);
             props.setAttributeColor(col);
         } catch (NumberFormatException nfe) {
@@ -358,19 +346,19 @@ public class RuntimeProperties {
         props.setCommentTextFont(Font.decode(fontString));
         fontString = p.getProperty("x2svg.attribute.font", Constants.DEFAULT_FONT_ATTRIBUTES); //$NON-NLS-1$
         props.setAttributeFont(Font.decode(fontString));
-        String boolString = p.getProperty("x2svg.comment.defaultOn", "false"); //$NON-NLS-1$ $NON-NLS-2$
+        String boolString = p.getProperty("x2svg.comment.defaultOn", FALSE); //$NON-NLS-1$ $NON-NLS-2$
         props.setCommentTextOn(Boolean.parseBoolean(boolString));
 
-        boolString = p.getProperty("x2svg.draw.optimize", "false"); //$NON-NLS-1$ $NON-NLS-2$
+        boolString = p.getProperty("x2svg.draw.optimize", FALSE); //$NON-NLS-1$ $NON-NLS-2$
         props.setOptimizeDrawing(Boolean.parseBoolean(boolString));
 
-        boolString = p.getProperty("x2svg.parser.attributes", "false"); //$NON-NLS-1$ $NON-NLS-2$
+        boolString = p.getProperty("x2svg.parser.attributes", FALSE); //$NON-NLS-1$ $NON-NLS-2$
         props.setWithAttributes(Boolean.parseBoolean(boolString));
 
-        boolString = p.getProperty("x2svg.parser.comments", "false"); //$NON-NLS-1$ $NON-NLS-2$
+        boolString = p.getProperty("x2svg.parser.comments", FALSE); //$NON-NLS-1$ $NON-NLS-2$
         props.setWithElementComments(Boolean.parseBoolean(boolString));
 
-        boolString = p.getProperty("x2svg.draw.simple_shadow", "false"); //$NON-NLS-1$ $NON-NLS-2$
+        boolString = p.getProperty("x2svg.draw.simple_shadow", FALSE); //$NON-NLS-1$ $NON-NLS-2$
         props.setSimple_shadow(Boolean.parseBoolean(boolString));
 
     }

@@ -22,11 +22,15 @@ import java.awt.BasicStroke;
 import java.awt.Stroke;
 
 /**
- * Various system wide constants
+ * Various system-wide constants
  *
  * @author hwr@pilhuhn.de
  */
 public abstract class Constants {
+
+    private Constants() {
+        // Just to hide the public constructor
+    }
 
     /**
      * Height of the border of an element box

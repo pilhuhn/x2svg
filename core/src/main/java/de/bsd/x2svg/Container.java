@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.bsd.x2svg.draw.TypeModel;
+import de.bsd.x2svg.parsers.JsonSchemaParser;
 import org.apache.batik.svggen.SVGGraphics2D;
 
 import de.bsd.x2svg.draw.AbstractElement;
@@ -37,6 +38,8 @@ import de.bsd.x2svg.draw.Reference;
 import de.bsd.x2svg.draw.SequenceModel;
 import de.bsd.x2svg.draw.SubstitutionElement;
 import de.bsd.x2svg.draw.SubstitutionModel;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.awt.Color;
 
@@ -128,6 +131,7 @@ public class Container {
      */
     public String comment;
 
+    private final Log log = LogFactory.getLog(Container.class);
     /**
      * Paints a container and its children. Does this by recursively calling itself.
      *
@@ -256,7 +260,7 @@ public class Container {
                 cm.draw(svg, x7, yHalf - 7);
                 break;
             case MIXED:
-                System.out.println("mixed content at " + name);
+                log.warn("mixed content at " + name);
                 break;
             case SUBSTITUTION:
                 cm = new SubstitutionModel();
@@ -267,7 +271,7 @@ public class Container {
 				cm.draw(svg, x7, yHalf-7);
 				break;
             default:
-                System.err.println("unknown case for ContentModel ... : " + content);
+                log.error("unknown case for ContentModel ... : " + content);
         }
 
         // line to right neighbour
@@ -320,7 +324,7 @@ public class Container {
 
     @Override
     public String toString() {
-        StringBuffer buf = new StringBuffer("['");
+        StringBuilder buf = new StringBuilder("['");
         buf.append(name).append("',p=");
         buf.append(parent);
         buf.append(", c={");

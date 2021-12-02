@@ -2,6 +2,7 @@ package de.bsd.x2svg.ant;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
@@ -21,7 +22,7 @@ public class X2SvgTask extends X2SvgBaseTask {
     /**
      * Create a hold for sub-task objects that need to be executed.
      */
-    private final ArrayList<X2SvgSubTask> tasks = new ArrayList<X2SvgSubTask>();
+    private final List<X2SvgSubTask> tasks = new ArrayList<>();
 
     /**
      * The output format type collection.
@@ -114,6 +115,7 @@ public class X2SvgTask extends X2SvgBaseTask {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute() throws BuildException {
         log("Starting X2Svg ...");
         log("Debug enabled: " + runtimeParameters.isDebug());

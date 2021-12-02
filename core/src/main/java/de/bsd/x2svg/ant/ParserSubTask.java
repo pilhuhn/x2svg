@@ -2,6 +2,7 @@ package de.bsd.x2svg.ant;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
@@ -10,8 +11,8 @@ import org.apache.tools.ant.types.FileSet;
 
 import de.bsd.x2svg.Runner;
 import de.bsd.x2svg.RuntimeParameters;
-import de.bsd.x2svg.outputConverter.OutputFormat;
-import de.bsd.x2svg.outputConverter.OutputType;
+import de.bsd.x2svg.output_converter.OutputFormat;
+import de.bsd.x2svg.output_converter.OutputType;
 
 /**
  * The X2SVG parsing sub-task. This task is responsible for parsing
@@ -31,7 +32,7 @@ public class ParserSubTask extends X2SvgSubTask {
     /**
      * A holder for FileSet objects that need to be processed.
      */
-    private final ArrayList<FileSet> fileSets = new ArrayList<FileSet>();
+    private final List<FileSet> fileSets = new ArrayList<>();
 
     /**
      * A comment to be added to all generated SVG items.
@@ -89,8 +90,9 @@ public class ParserSubTask extends X2SvgSubTask {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute() throws BuildException {
-        // Ensure the this parser task has valid runtime parameters.
+        // Ensure the parser task has valid runtime parameters.
         if (getRuntimeParameters() == null) {
             log("Expected runtime parameters to be set for Parser task, setting defaults.", Project.MSG_WARN);
             setRuntimeParameters(new RuntimeParameters());

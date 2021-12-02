@@ -23,28 +23,32 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
-import de.bsd.x2svg.outputConverter.ConversionException;
-import de.bsd.x2svg.outputConverter.OutputFormat;
-import de.bsd.x2svg.outputConverter.SvgConverter;
+import de.bsd.x2svg.output_converter.ConversionException;
+import de.bsd.x2svg.output_converter.OutputFormat;
+import de.bsd.x2svg.output_converter.SvgConverter;
 import de.bsd.x2svg.parsers.InputParser;
 import de.bsd.x2svg.parsers.ParserProblemException;
-import de.bsd.x2svg.util.IOUtil;
 
 import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.batik.svggen.SVGGeneratorContext;
 import org.apache.batik.svggen.SVGGraphics2D;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 
 public class Runner {
 
     private static final String DOTS = "................................................"; //$NON-NLS-1$
-    private static SVGGraphics2D svgGenerator;
-    private static final boolean debug = false;
+    private SVGGraphics2D svgGenerator;
+    private static final boolean DEBUG = false;
     private final RuntimeProperties rProps = RuntimeProperties.getInstance();
+
+    private final Log log = LogFactory.getLog(Runner.class);
 
     /**
      * Main code block, runs the whole show.
@@ -53,9 +57,9 @@ public class Runner {
      * @throws Exception if anything goes wrong internally
      */
     public void run(RuntimeParameters params) throws Exception {
-        rProps.loadProperties(params.getPropertiesLocation(), debug);
+        rProps.loadProperties(params.getPropertiesLocation(), DEBUG);
         rProps.setFont(Font.decode(rProps.getFontName()));
-        setupSvg();
+        svgGenerator = setupSvg();
         rProps.setFontMetrics(svgGenerator.getFontMetrics(rProps.getFont()));
         rProps.setFontHeight(rProps.getFontMetrics().getHeight());
         rProps.setFontSmall(Font.decode(rProps.getFontSmallName()));
@@ -66,14 +70,8 @@ public class Runner {
         parserLoader.load();
 
         InputParser ip;
-        try {
-            if (params.getOpMode() != null)
-                ip = parserLoader.getParserByMode(params.getOpMode());
-            else
-                ip = parserLoader.getParserForFilename(params.getInputFileName());
-        } catch (NoParserException e) {
-            System.out.println(Messages.getString("Runner.3")); //$NON-NLS-1$
-            System.out.println(e.getMessage());
+        ip = getInputParser(params, parserLoader);
+        if (ip == null) {
             return;
         }
 
@@ -82,7 +80,7 @@ public class Runner {
         if (parserSpecificOptions != null && parserSpecificOptions.length>0) {
             ip.setParserOptions(parserSpecificOptions);
         }
-        if (debug)
+        if (DEBUG)
             ip.setDebug();
         // set with attr and with comment if appropriate
         if (params.getWithAttributes() != null) // command line overrides
@@ -100,14 +98,14 @@ public class Runner {
         try {
             rootCont = ip.parseInput();
         } catch (ParserProblemException ppe) {
-            System.out.println(Messages.getString("Runner.4")); //$NON-NLS-1$
-            System.out.println("  " + ppe.getMessage()); //$NON-NLS-1$
+            log.info(Messages.getString("Runner.4")); //$NON-NLS-1$
+            log.info("  " + ppe.getMessage()); //$NON-NLS-1$
             return;
         }
 
         // parsers failed, so exit here
         if (rootCont == null) {
-            System.out.println(Messages.getString("Runner.6")); //$NON-NLS-1$
+            log.info(Messages.getString("Runner.6")); //$NON-NLS-1$
             return;
         }
 
@@ -118,8 +116,8 @@ public class Runner {
         rootCont.totalWidth += 5; // see below
         rootCont.totalHeight += Constants.BORDER_HEIGHT;
 
-        if (debug) {
-            System.out.println();
+        if (DEBUG) {
+            log.info(""); // Just an empty line on purpose
             printContainer(rootCont, "  "); //$NON-NLS-1$
         }
 
@@ -172,12 +170,10 @@ public class Runner {
         svgGenerator.setSVGCanvasSize(new Dimension(rootCont.totalWidth, rootCont.totalHeight + 20)); // TODO height is bogus
 
         File svgFile = new File(params.getSvgOutputFile());
-        Writer out = null;
-        try {
-            out = new OutputStreamWriter(new FileOutputStream(svgFile), StandardCharsets.UTF_8); //$NON-NLS-1$
-            svgGenerator.stream(out, false); // 2nd arg=use Css
-        } finally {
-            IOUtil.close(out);
+        try (FileOutputStream fos = new FileOutputStream(svgFile);
+             Writer wout = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+        ) {
+            svgGenerator.stream(wout, false); // 2nd arg=use Css
         }
 
         /*
@@ -190,15 +186,31 @@ public class Runner {
             try {
                 outputConverter.convert(output.getType(), svgFile, outFile);
             } catch (ConversionException ce) {
-                System.out.println("Problem converting to " + output.getType() + ": " + ce.getLocalizedMessage());
+                log.info("Problem converting to " + output.getType() + ": " + ce.getLocalizedMessage());
             }
         }
     }
 
+    private InputParser getInputParser(RuntimeParameters params, ParserLoader parserLoader) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+        InputParser ip;
+        try {
+            if (params.getOpMode() != null)
+                ip = parserLoader.getParserByMode(params.getOpMode());
+            else
+                ip = parserLoader.getParserForFilename(params.getInputFileName());
+        } catch (NoParserException e) {
+            log.info(Messages.getString("Runner.3")); //$NON-NLS-1$
+            log.info(e.getMessage());
+            return null;
+        }
+        return ip;
+    }
+
     /**
      * Set up the SVG routines
+     * @return
      */
-    private void setupSvg() {
+    private SVGGraphics2D setupSvg() {
         DOMImplementation domImpl =
                 GenericDOMImplementation.getDOMImplementation();
 
@@ -211,8 +223,8 @@ public class Runner {
         SVGGeneratorContext ctx = SVGGeneratorContext.createDefault(document);
         ctx.setComment("Generated by x2svg with the help of Batik SVG Generator"); //$NON-NLS-1$
 
-        // Create an instance of the SVG Generator.
-        svgGenerator = new SVGGraphics2D(ctx, false);
+        // Create an instance of the SVG Generator and return it.
+        return new SVGGraphics2D(ctx, false);
     }
 
     /**
@@ -220,10 +232,10 @@ public class Runner {
      * Mostly a debugging help
      *
      * @param rootCont The root element of the Container tree
-     * @param indent   how much spaces should this be indended?
+     * @param indent   how many spaces should this be indended?
      */
     private void printContainer(Container rootCont, String indent) {
-        System.out.print(indent + "--<" + rootCont.name + ">-"); //$NON-NLS-1$ //$NON-NLS-2$
+        String info = indent + "--<" + rootCont.name + ">-"; //$NON-NLS-1$ //$NON-NLS-2$
         String out;
         switch (rootCont.content) {
             case MIXED:
@@ -238,15 +250,14 @@ public class Runner {
             default:
                 out = "-"; //$NON-NLS-1$
         }
-        String info = "   tw=" + rootCont.totalWidth + ", th=" //$NON-NLS-1$ //$NON-NLS-2$
+        info = info + out + "   tw=" + rootCont.totalWidth + ", th=" //$NON-NLS-1$ //$NON-NLS-2$
                 + rootCont.totalHeight;
-        System.out.println(out + info);
+        log.info(info);
         for (Container cont : rootCont.children) {
             String newIndent = indent + ".." //$NON-NLS-1$
                     + DOTS.substring(0, rootCont.name.length());
             printContainer(cont, newIndent);
         }
-        // System.out.println();
 
     }
 
@@ -260,8 +271,8 @@ public class Runner {
      * @return the y coordinate of the little tail on the left side of the
      */
     private int drawContainer(Container rootCont, int startX, int startY) {
-        if (debug) {
-            System.out.println("dc: " + rootCont.name + " ,x=" + startX + ",y=" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        if (DEBUG) {
+            log.info("dc: " + rootCont.name + " ,x=" + startX + ",y=" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     + startY + ",ca=" + rootCont.cardinality.getFrom()); //$NON-NLS-1$
         }
         int myY = startY + (rootCont.totalHeight / 2);
